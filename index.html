@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escala ADCEB</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .btn {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    .btn:active {
+      background: #2980b9;
+    }
+    .hidden {
+      display: none;
+    }
+    .form-group {
+      margin: 15px 0;
+    }
+    input {
+      width: 90%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      max-length: 25;
+    }
+    #resultado {
+      margin-top: 20px;
+      padding: 15px;
+      background: #ecf0f1;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Escala ADCEB</h1>
+  <p>Escolha o mês:</p>
+  <div id="meses"></div>
+
+  <div id="dias" class="hidden">
+    <p>Escolha o dia:</p>
+    <div id="diasBotoes"></div>
+  </div>
+
+  <div id="formulario" class="hidden">
+    <h2 id="dataSelecionada"></h2>
+    <form id="escalaForm">
+      <div class="form-group">
+        Pregador: <br><input type="text" maxlength="25">
+      </div>
+      <div class="form-group">
+        Direção do Culto: <br><input type="text" maxlength="25">
+      </div>
+      <div class="form-group">
+        Porta Principal: <br><input type="text" maxlength="25">
+      </div>
+      <div class="form-group">
+        Porta Lateral: <br><input type="text" maxlength="25">
+      </div>
+      <div class="form-group">
+        Porta Altar: <br><input type="text" maxlength="25">
+      </div>
+      <div class="form-group">
+        Estacionamento: <br><input type="text" maxlength="25">
+      </div>
+      <div class="form-group">
+        Bebedouro e Banheiros: <br><input type="text" maxlength="25">
+      </div>
+      <div class="form-group">
+        Sonoplastia: <br><input type="text" maxlength="25">
+      </div>
+    </form>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+                   "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const mesesDiv = document.getElementById("meses");
+    const diasDiv = document.getElementById("dias");
+    const diasBotoes = document.getElementById("diasBotoes");
+    const formulario = document.getElementById("formulario");
+    const dataSelecionada = document.getElementById("dataSelecionada");
+
+    let mesEscolhido = null;
+    let diaEscolhido = null;
+
+    // Criar botões de meses
+    meses.forEach((m, i) => {
+      const btn = document.createElement("button");
+      btn.className = "btn";
+      btn.textContent = m;
+      btn.onclick = () => {
+        mesEscolhido = i + 1;
+        mostrarDias(m);
+      };
+      mesesDiv.appendChild(btn);
+    });
+
+    // Mostrar dias do mês
+    function mostrarDias(mesNome) {
+      diasDiv.classList.remove("hidden");
+      diasBotoes.innerHTML = "";
+      for (let d = 1; d <= 31; d++) {
+        const btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = d;
+        btn.onclick = (e) => {
+          e.preventDefault();
+          diaEscolhido = d;
+          mostrarFormulario(mesNome, d);
+        };
+        diasBotoes.appendChild(btn);
+      }
+    }
+
+    // Mostrar formulário da escala
+    function mostrarFormulario(mesNome, dia) {
+      formulario.classList.remove("hidden");
+      dataSelecionada.textContent = `Data: ${dia} de ${mesNome}`;
+    }
+  </script>
+</body>
+</html>
