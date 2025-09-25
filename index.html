@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Escala ADCEB</title>
   <style>
-    /* --- Reset básico --- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * {margin: 0; padding: 0; box-sizing: border-box;}
     body {
       font-family: "Segoe UI", Arial, sans-serif;
       background: #f7f9fc;
@@ -18,11 +13,10 @@
       padding-top: 60px;
     }
 
-    /* --- Cabeçalho fixo --- */
+    /* Cabeçalho fixo */
     header {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       background: #2c3e50;
       color: white;
@@ -34,15 +28,12 @@
       z-index: 1000;
     }
 
-    /* --- Container principal --- */
-    main {
-      padding: 20px;
-    }
+    main { padding: 20px; }
 
-    /* --- Botões estilo card --- */
+    /* Botões */
     .btn {
       display: inline-block;
-      margin: 6px;
+      margin: 5px;
       padding: 12px 18px;
       font-size: 14px;
       border: none;
@@ -53,23 +44,14 @@
       transition: all 0.2s;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-    .btn:hover {
-      background: #2980b9;
-    }
-    .btn:active {
-      transform: scale(0.96);
-    }
-    .btn-secondary {
-      background: #95a5a6;
-    }
-    .btn-danger {
-      background: #e74c3c;
-    }
+    .btn:hover { background: #2980b9; }
+    .btn:active { transform: scale(0.96); }
+    .btn-secondary { background: #95a5a6; }
+    .btn-danger { background: #e74c3c; }
 
-    /* --- Seções escondidas --- */
     .hidden { display: none; }
 
-    /* --- Grade de dias --- */
+    /* Grade dos dias */
     #diasBotoes {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -81,23 +63,20 @@
       font-size: 13px;
     }
 
-    /* --- Cartão do formulário --- */
+    /* Card */
     .card {
       background: white;
       border-radius: 12px;
       padding: 20px;
       margin-top: 20px;
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      text-align: left;
     }
     .card h2 {
       margin-bottom: 15px;
       font-size: 18px;
       text-align: center;
     }
-    .form-group {
-      margin-bottom: 15px;
-    }
+    .form-group { margin-bottom: 15px; }
     .form-group label {
       display: block;
       font-size: 14px;
@@ -112,7 +91,7 @@
       font-size: 14px;
     }
 
-    /* --- Área de feedback --- */
+    /* Mensagem */
     #resultado {
       margin-top: 15px;
       padding: 10px;
@@ -120,14 +99,8 @@
       font-size: 14px;
       text-align: center;
     }
-    #resultado.sucesso {
-      background: #2ecc71;
-      color: white;
-    }
-    #resultado.erro {
-      background: #e74c3c;
-      color: white;
-    }
+    #resultado.sucesso { background: #2ecc71; color: white; }
+    #resultado.erro { background: #e74c3c; color: white; }
   </style>
 </head>
 <body>
@@ -177,8 +150,9 @@
 
     let mesEscolhido = null;
     let diaEscolhido = null;
+    let anoAtual = new Date().getFullYear();
 
-    // Criar botões de meses
+    // Criar botões dos meses
     meses.forEach((m, i) => {
       const btn = document.createElement("button");
       btn.className = "btn";
@@ -186,16 +160,23 @@
       btn.onclick = (e) => {
         e.preventDefault();
         mesEscolhido = i + 1;
-        mostrarDias(m);
+        mostrarDias(m, mesEscolhido);
       };
       mesesDiv.appendChild(btn);
     });
 
-    // Mostrar dias do mês
-    function mostrarDias(mesNome) {
+    // Função que retorna dias do mês (considera bissexto)
+    function diasNoMes(mes, ano) {
+      return new Date(ano, mes, 0).getDate();
+    }
+
+    // Mostrar dias
+    function mostrarDias(mesNome, mesNumero) {
       diasDiv.classList.remove("hidden");
       diasBotoes.innerHTML = "";
-      for (let d = 1; d <= 31; d++) {
+      const qtdDias = diasNoMes(mesNumero, anoAtual);
+
+      for (let d = 1; d <= qtdDias; d++) {
         const btn = document.createElement("button");
         btn.className = "btn";
         btn.textContent = d;
@@ -208,13 +189,12 @@
       }
     }
 
-    // Mostrar formulário da escala
+    // Mostrar formulário
     function mostrarFormulario(mesNome, dia) {
       formulario.classList.remove("hidden");
-      const chave = `${dia}-${mesEscolhido}`;
-      dataSelecionada.textContent = `📅 ${dia} de ${mesNome}`;
+      const chave = `${dia}-${mesEscolhido}-${anoAtual}`;
+      dataSelecionada.textContent = `📅 ${dia} de ${mesNome} de ${anoAtual}`;
 
-      // Carregar escala se já existir
       const escalaSalva = JSON.parse(localStorage.getItem(chave));
       if (escalaSalva) {
         document.getElementById("pregador").value = escalaSalva.pregador;
@@ -232,9 +212,9 @@
       }
     }
 
-    // Salvar escala
+    // Salvar
     function salvarEscala() {
-      const chave = `${diaEscolhido}-${mesEscolhido}`;
+      const chave = `${diaEscolhido}-${mesEscolhido}-${anoAtual}`;
       const escala = {
         pregador: document.getElementById("pregador").value,
         direcao: document.getElementById("direcao").value,
@@ -254,7 +234,7 @@
     }
 
     function excluirEscala() {
-      const chave = `${diaEscolhido}-${mesEscolhido}`;
+      const chave = `${diaEscolhido}-${mesEscolhido}-${anoAtual}`;
       localStorage.removeItem(chave);
       document.getElementById("escalaForm").reset();
       feedback("Escala deste dia foi excluída.", "erro");
