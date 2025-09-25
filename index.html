@@ -62,28 +62,28 @@ h1{text-align:center;margin-bottom:20px;}
 <div id="appPrincipal" class="hidden">
 
   <!-- Seleção de ano -->
-  <div class="card">
+  <div class="card" id="cardAno">
     <h2>Selecionar Ano</h2>
     <div id="anosContainer"></div>
     <button class="btn-secondary" onclick="voltarInicio()">Voltar</button>
   </div>
 
   <!-- Seleção de mês -->
-  <div class="card">
+  <div class="card hidden" id="cardMes">
     <h2>Escolher Mês</h2>
     <div id="meses"></div>
     <button class="btn-secondary" onclick="voltarInicio()">Voltar</button>
   </div>
 
   <!-- Seleção de dia -->
-  <div class="card hidden" id="dias">
+  <div class="card hidden" id="cardDia">
     <h2>Escolher Dia</h2>
     <div id="diasBotoes"></div>
     <button class="btn-secondary" onclick="voltarInicio()">Voltar</button>
   </div>
 
   <!-- Formulário escala -->
-  <div class="card hidden" id="formulario">
+  <div class="card hidden" id="cardFormulario">
     <h2 id="dataSelecionada"></h2>
     <form id="escalaForm">
       <div class="form-group"><label>Pregador:</label><input type="text" id="pregador" maxlength="25"></div>
@@ -111,30 +111,42 @@ h1{text-align:center;margin-bottom:20px;}
 let senhaADM = localStorage.getItem("senhaADM") || "025563";
 let admLogado=false;
 let anoSelecionado=new Date().getFullYear();
+const meses=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+let mesEscolhido=null;
+let diaEscolhido=null;
+
+// Elementos
+const cardAno=document.getElementById("cardAno");
+const cardMes=document.getElementById("cardMes");
+const cardDia=document.getElementById("cardDia");
+const cardFormulario=document.getElementById("cardFormulario");
 const anosContainer=document.getElementById("anosContainer");
 const mesesDiv=document.getElementById("meses");
-const diasDiv=document.getElementById("dias");
 const diasBotoes=document.getElementById("diasBotoes");
-const formulario=document.getElementById("formulario");
 const dataSelecionada=document.getElementById("dataSelecionada");
 const resultado=document.getElementById("resultado");
-const meses=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
+// Funções de navegação
 function voltarInicio(){
-  // Esconde todas as seções e volta à tela inicial
   document.getElementById("loginPage").classList.remove("hidden");
   document.getElementById("loginADM").classList.add("hidden");
   document.getElementById("appPrincipal").classList.add("hidden");
+  cardAno.classList.remove("hidden");
+  cardMes.classList.add("hidden");
+  cardDia.classList.add("hidden");
+  cardFormulario.classList.add("hidden");
 }
 
+// Entrar Usuário
 function entrarUsuario(){
   admLogado=false;
   document.getElementById("loginPage").classList.add("hidden");
   document.getElementById("appPrincipal").classList.remove("hidden");
   document.getElementById("botoesADM").style.display="none";
-  initApp();
+  iniciarAno();
 }
 
+// Entrar ADM
 function entrarADM(){
   document.getElementById("loginPage").classList.add("hidden");
   document.getElementById("loginADM").classList.remove("hidden");
@@ -147,7 +159,7 @@ function verificarLogin(){
     document.getElementById("loginADM").classList.add("hidden");
     document.getElementById("appPrincipal").classList.remove("hidden");
     document.getElementById("botoesADM").style.display="block";
-    initApp();
+    iniciarAno();
   }else{
     alert("Senha incorreta!");
   }
@@ -162,7 +174,12 @@ function alterarSenha(){
   }else{ alert("Senha inválida!"); }
 }
 
-function initApp(){
+// Inicializar Ano
+function iniciarAno(){
+  cardAno.classList.remove("hidden");
+  cardMes.classList.add("hidden");
+  cardDia.classList.add("hidden");
+  cardFormulario.classList.add("hidden");
   anosContainer.innerHTML="";
   for(let y=anoSelecionado-2;y<=anoSelecionado+2;y++){
     const btn=document.createElement("button");
@@ -171,30 +188,30 @@ function initApp(){
     btn.onclick=()=>{ anoSelecionado=y; mostrarMeses(); };
     anosContainer.appendChild(btn);
   }
-  mostrarMeses();
 }
 
+// Mostrar meses
 function mostrarMeses(){
+  cardAno.classList.add("hidden");
+  cardMes.classList.remove("hidden");
   mesesDiv.innerHTML="";
   meses.forEach((m,i)=>{
     const btn=document.createElement("button");
     btn.className="btn";
     btn.textContent=m;
-    btn.onclick=()=>{ mostrarDias(i+1,m); };
+    btn.onclick=()=>{ mesEscolhido=i+1; mostrarDias(i+1,m); };
     mesesDiv.appendChild(btn);
   });
 }
 
+// Mostrar dias
 function diasNoMes(m,ano){ return new Date(ano,m,0).getDate(); }
-let mesEscolhido=null;
-let diaEscolhido=null;
-
 function mostrarDias(mesNumero,mesNome){
-  diasDiv.classList.remove("hidden");
+  cardMes.classList.add("hidden");
+  cardDia.classList.remove("hidden");
   diasBotoes.innerHTML="";
-  const qtdDias=diasNoMes(mesNumero,anoSelecionado);
-  mesEscolhido=mesNumero;
-  for(let d=1;d<=qtdDias;d++){
+  const qtd=diasNoMes(mesNumero,anoSelecionado);
+  for(let d=1;d<=qtd;d++){
     const btn=document.createElement("button");
     btn.className="btn";
     btn.textContent=d;
@@ -203,27 +220,31 @@ function mostrarDias(mesNumero,mesNome){
   }
 }
 
+// Mostrar formulário
 function mostrarFormulario(mesNome,dia){
-  formulario.classList.remove("hidden");
+  cardDia.classList.add("hidden");
+  cardFormulario.classList.remove("hidden");
   const chave=`${dia}-${mesEscolhido}-${anoSelecionado}`;
   dataSelecionada.textContent=`📅 ${dia} de ${mesNome} de ${anoSelecionado}`;
   const escalaSalva=JSON.parse(localStorage.getItem(chave));
   if(escalaSalva){
-    document.getElementById("pregador").value=escalaSalva.pregador;
-    document.getElementById("direcao").value=escalaSalva.direcao;
-    document.getElementById("portaPrincipal").value=escalaSalva.portaPrincipal;
-    document.getElementById("portaLateral").value=escalaSalva.portaLateral;
-    document.getElementById("portaAltar").value=escalaSalva.portaAltar;
-    document.getElementById("estacionamento").value=escalaSalva.estacionamento;
-    document.getElementById("bebedouro").value=escalaSalva.bebedouro;
-    document.getElementById("sonoplastia").value=escalaSalva.sonoplastia;
+    Object.keys(escalaSalva).forEach(k=>{
+      const input=document.getElementById(k);
+      if(input) input.value=escalaSalva[k];
+    });
   } else { document.getElementById("escalaForm").reset(); }
   [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ i.disabled=!admLogado; });
 }
 
+// Funções ADM
 function salvarEscala(){
-  if(!admLogado){ feedback("Somente ADM pode salvar.","erro"); return; }
+  if(!admLogado){ alert("Somente ADM pode salvar"); return; }
   const chave=`${diaEscolhido}-${mesEscolhido}-${anoSelecionado}`;
-  const escala={
-    pregador:document.getElementById("pregador").value,
-    direcao:document.get
+  const escala={};
+  [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ escala[i.id]=i.value; });
+  localStorage.setItem(chave,JSON.stringify(escala));
+  resultado.textContent="Escala salva!";
+  resultado.className="sucesso";
+}
+function editarEscala(){ if(!admLogado){ alert("Somente ADM"); return; } resultado.textContent="Modo edição liberado"; resultado.className="sucesso";}
+function excluirEscala(){ if(!admLogado){ alert("
