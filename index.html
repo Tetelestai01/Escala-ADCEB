@@ -24,18 +24,28 @@
       color: #2c3e50;
     }
     .btn {
-      display: inline-block;
-      margin: 4px;
-      padding: 10px 15px;
-      font-size: 14px;
+      padding: 12px;
       border: none;
-      border-radius: 8px;
-      background: #3498db;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
       color: white;
+      font-size: 14px;
+      font-weight: bold;
       cursor: pointer;
+      transition: transform 0.15s ease-in-out, background 0.3s;
     }
-    .btn:active {
-      background: #2980b9;
+    .btn:hover {
+      background: linear-gradient(135deg, #2980b9, #1c5985);
+      transform: scale(1.05);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .days-grid {
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
     }
     .hidden { display: none; }
     .form-group {
@@ -71,11 +81,11 @@
   </header>
 
   <p>Escolha o mês:</p>
-  <div id="meses"></div>
+  <div id="meses" class="grid"></div>
 
   <div id="dias" class="hidden">
     <p>Escolha o dia:</p>
-    <div id="diasBotoes"></div>
+    <div id="diasBotoes" class="grid days-grid"></div>
   </div>
 
   <div id="formulario" class="hidden">
@@ -132,14 +142,14 @@
 
     let mesEscolhido = null;
     let diaEscolhido = null;
-    let editavel = true;
 
     // Criar botões de meses
     meses.forEach((m, i) => {
       const btn = document.createElement("button");
       btn.className = "btn";
       btn.textContent = m;
-      btn.onclick = () => {
+      btn.onclick = (e) => {
+        e.preventDefault();
         mesEscolhido = i + 1;
         mostrarDias(m);
       };
@@ -209,13 +219,11 @@
     function bloquearCampos() {
       [...escalaForm.elements].forEach(el => el.disabled = true);
       editarBtn.classList.remove("hidden");
-      editavel = false;
     }
 
     function desbloquearCampos() {
       [...escalaForm.elements].forEach(el => el.disabled = false);
       editarBtn.classList.add("hidden");
-      editavel = true;
     }
 
     function limparCampos() {
