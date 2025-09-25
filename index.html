@@ -32,29 +32,42 @@ h1{text-align:center;margin-bottom:20px;}
 <main>
 
 <!-- Tela Inicial -->
-<div id="loginPage" class="card">
+<div id="telaInicial" class="card">
 <h1>ESCALA ADCEB</h1>
 <button class="btn" onclick="entrarUsuario()">Entrar como Usuário</button>
 <button class="btn" onclick="entrarADM()">Entrar como ADM</button>
 </div>
 
-<!-- Seleção Escala -->
-<div id="escalaPage" class="card hidden">
-<h2 id="tituloSelecao"></h2>
+<!-- Tela Login ADM -->
+<div id="telaADM" class="card hidden">
+<h2>Login ADM</h2>
+<div class="form-group">
+<label>Senha 6 dígitos</label>
+<input type="password" id="senhaADMInput" maxlength="6" placeholder="Digite a senha">
+</div>
+<button class="btn" onclick="verificarADM()">Entrar</button>
+<button class="btn-secondary" onclick="voltarTelaInicial()">Voltar</button>
+<div id="msgADM"></div>
+</div>
+
+<!-- Tela Usuário / Escala -->
+<div id="telaUsuario" class="card hidden">
+<h2>Visualizar Escala</h2>
 <div id="anos"></div>
 <div id="meses" class="hidden"></div>
 <div id="dias" class="hidden"></div>
+<button class="btn-secondary" onclick="voltarTelaInicial()">Voltar</button>
 <div id="formEscala" class="hidden">
 <h3 id="dataSelecionada"></h3>
 <form id="escalaForm">
-<div class="form-group"><label>Pregador:</label><input type="text" id="pregador" maxlength="25"></div>
-<div class="form-group"><label>Direção do Culto:</label><input type="text" id="direcao" maxlength="25"></div>
-<div class="form-group"><label>Porta Principal:</label><input type="text" id="portaPrincipal" maxlength="25"></div>
-<div class="form-group"><label>Porta Lateral:</label><input type="text" id="portaLateral" maxlength="25"></div>
-<div class="form-group"><label>Porta Altar:</label><input type="text" id="portaAltar" maxlength="25"></div>
-<div class="form-group"><label>Estacionamento:</label><input type="text" id="estacionamento" maxlength="25"></div>
-<div class="form-group"><label>Bebedouro e Banheiros:</label><input type="text" id="bebedouro" maxlength="25"></div>
-<div class="form-group"><label>Sonoplastia:</label><input type="text" id="sonoplastia" maxlength="25"></div>
+<div class="form-group"><label>Pregador:</label><input type="text" id="pregador" maxlength="25" disabled></div>
+<div class="form-group"><label>Direção do Culto:</label><input type="text" id="direcao" maxlength="25" disabled></div>
+<div class="form-group"><label>Porta Principal:</label><input type="text" id="portaPrincipal" maxlength="25" disabled></div>
+<div class="form-group"><label>Porta Lateral:</label><input type="text" id="portaLateral" maxlength="25" disabled></div>
+<div class="form-group"><label>Porta Altar:</label><input type="text" id="portaAltar" maxlength="25" disabled></div>
+<div class="form-group"><label>Estacionamento:</label><input type="text" id="estacionamento" maxlength="25" disabled></div>
+<div class="form-group"><label>Bebedouro e Banheiros:</label><input type="text" id="bebedouro" maxlength="25" disabled></div>
+<div class="form-group"><label>Sonoplastia:</label><input type="text" id="sonoplastia" maxlength="25" disabled></div>
 </form>
 <div id="botoesADM" class="hidden">
 <button class="btn" onclick="salvarEscala()">💾 Salvar</button>
@@ -64,11 +77,9 @@ h1{text-align:center;margin-bottom:20px;}
 </div>
 <div id="resultado"></div>
 </div>
-<button class="btn-secondary" onclick="voltarInicio()">Voltar</button>
 </div>
 
 <script>
-// Variáveis
 let senhaADM = localStorage.getItem("senhaADM") || "025563";
 let admLogado = false;
 let anoSelecionado = new Date().getFullYear();
@@ -76,109 +87,129 @@ let mesSelecionado = null;
 let diaSelecionado = null;
 const mesesArray=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
-// Funções
-function voltarInicio(){
-  document.getElementById("loginPage").classList.remove("hidden");
-  document.getElementById("escalaPage").classList.add("hidden");
-  document.getElementById("anos").classList.add("hidden");
-  document.getElementById("meses").classList.add("hidden");
-  document.getElementById("dias").classList.add("hidden");
-  document.getElementById("formEscala").classList.add("hidden");
-  document.getElementById("botoesADM").classList.add("hidden");
+// Funções de navegação
+function voltarTelaInicial(){
+document.getElementById("telaInicial").classList.remove("hidden");
+document.getElementById("telaADM").classList.add("hidden");
+document.getElementById("telaUsuario").classList.add("hidden");
+document.getElementById("anos").classList.add("hidden");
+document.getElementById("meses").classList.add("hidden");
+document.getElementById("dias").classList.add("hidden");
+document.getElementById("formEscala").classList.add("hidden");
+document.getElementById("botoesADM").classList.add("hidden");
 }
 
-function entrarUsuario(){
-  admLogado = false;
-  iniciarEscala("Usuário");
-}
-
+// Entrar ADM
 function entrarADM(){
-  let senha = prompt("Digite a senha de 6 dígitos:");
-  if(senha === senhaADM){
-    admLogado = true;
-    iniciarEscala("ADM");
-    document.getElementById("botoesADM").classList.remove("hidden");
-  } else {
-    alert("Senha incorreta!");
-    voltarInicio();
-  }
+document.getElementById("telaInicial").classList.add("hidden");
+document.getElementById("telaADM").classList.remove("hidden");
 }
 
-function iniciarEscala(tipo){
-  document.getElementById("loginPage").classList.add("hidden");
-  document.getElementById("escalaPage").classList.remove("hidden");
-  document.getElementById("tituloSelecao").innerText = tipo === "ADM" ? "Área ADM" : "Visualização Usuário";
-  gerarAnos();
+// Verificar ADM
+function verificarADM(){
+let senha = document.getElementById("senhaADMInput").value;
+if(senha === senhaADM){
+admLogado = true;
+document.getElementById("telaADM").classList.add("hidden");
+document.getElementById("telaUsuario").classList.remove("hidden");
+document.getElementById("botoesADM").classList.remove("hidden");
+iniciarAno();
+}else{
+alert("Senha incorreta!");
+}
 }
 
-function gerarAnos(){
-  const anosDiv = document.getElementById("anos");
-  anosDiv.innerHTML="";
-  anosDiv.classList.remove("hidden");
-  for(let y=anoSelecionado-2; y<=anoSelecionado+2; y++){
-    let btn = document.createElement("button");
-    btn.className="btn";
-    btn.innerText=y;
-    btn.onclick=()=>{ anoSelecionado=y; gerarMeses(); };
-    anosDiv.appendChild(btn);
-  }
+// Entrar Usuário
+function entrarUsuario(){
+admLogado=false;
+document.getElementById("telaInicial").classList.add("hidden");
+document.getElementById("telaUsuario").classList.remove("hidden");
+document.getElementById("botoesADM").classList.add("hidden");
+iniciarAno();
 }
 
+// Gerar anos
+function iniciarAno(){
+const anosDiv = document.getElementById("anos");
+anosDiv.innerHTML="";
+anosDiv.classList.remove("hidden");
+for(let y=anoSelecionado-2; y<=anoSelecionado+2; y++){
+let btn = document.createElement("button");
+btn.className="btn";
+btn.innerText=y;
+btn.onclick=()=>{ anoSelecionado=y; gerarMeses(); };
+anosDiv.appendChild(btn);
+}
+document.getElementById("meses").classList.add("hidden");
+document.getElementById("dias").classList.add("hidden");
+document.getElementById("formEscala").classList.add("hidden");
+}
+
+// Gerar meses
 function gerarMeses(){
-  document.getElementById("anos").classList.add("hidden");
-  const mesesDiv = document.getElementById("meses");
-  mesesDiv.innerHTML="";
-  mesesDiv.classList.remove("hidden");
-  mesesArray.forEach((m,i)=>{
-    let btn = document.createElement("button");
-    btn.className="btn";
-    btn.innerText=m;
-    btn.onclick=()=>{ mesSelecionado=i+1; gerarDias(i+1); };
-    mesesDiv.appendChild(btn);
-  });
+document.getElementById("anos").classList.add("hidden");
+const mesesDiv = document.getElementById("meses");
+mesesDiv.innerHTML="";
+mesesDiv.classList.remove("hidden");
+mesesArray.forEach((m,i)=>{
+let btn = document.createElement("button");
+btn.className="btn";
+btn.innerText=m;
+btn.onclick=()=>{ mesSelecionado=i+1; gerarDias(i+1); };
+mesesDiv.appendChild(btn);
+});
+document.getElementById("dias").classList.add("hidden");
+document.getElementById("formEscala").classList.add("hidden");
 }
 
+// Gerar dias
 function gerarDias(mes){
-  document.getElementById("meses").classList.add("hidden");
-  const diasDiv = document.getElementById("dias");
-  diasDiv.innerHTML="";
-  diasDiv.classList.remove("hidden");
-  const qtdDias = new Date(anoSelecionado,mes,0).getDate();
-  for(let d=1; d<=qtdDias; d++){
-    let btn = document.createElement("button");
-    btn.className="btn";
-    btn.innerText=d;
-    btn.onclick=()=>{ diaSelecionado=d; mostrarFormulario(); };
-    diasDiv.appendChild(btn);
-  }
+document.getElementById("meses").classList.add("hidden");
+const diasDiv = document.getElementById("dias");
+diasDiv.innerHTML="";
+diasDiv.classList.remove("hidden");
+const qtdDias = new Date(anoSelecionado,mes,0).getDate();
+for(let d=1; d<=qtdDias; d++){
+let btn = document.createElement("button");
+btn.className="btn";
+btn.innerText=d;
+btn.onclick=()=>{ diaSelecionado=d; mostrarFormulario(); };
+diasDiv.appendChild(btn);
+}
+document.getElementById("formEscala").classList.add("hidden");
 }
 
+// Mostrar formulário
 function mostrarFormulario(){
-  document.getElementById("dias").classList.add("hidden");
-  const formDiv = document.getElementById("formEscala");
-  formDiv.classList.remove("hidden");
-  document.getElementById("dataSelecionada").innerText = `${diaSelecionado} de ${mesesArray[mesSelecionado-1]} de ${anoSelecionado}`;
-  const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
-  const escala = JSON.parse(localStorage.getItem(chave));
-  if(escala){
-    Object.keys(escala).forEach(k=>{
-      let input = document.getElementById(k);
-      if(input) input.value = escala[k];
-    });
-  } else { document.getElementById("escalaForm").reset(); }
-  [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ i.disabled=!admLogado; });
+document.getElementById("dias").classList.add("hidden");
+const formDiv = document.getElementById("formEscala");
+formDiv.classList.remove("hidden");
+document.getElementById("dataSelecionada").innerText = `${diaSelecionado} de ${mesesArray[mesSelecionado-1]} de ${anoSelecionado}`;
+const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
+const escala = JSON.parse(localStorage.getItem(chave));
+if(escala){
+Object.keys(escala).forEach(k=>{
+let input = document.getElementById(k);
+if(input) input.value = escala[k];
+});
+}else{ document.getElementById("escalaForm").reset(); }
+[...document.querySelectorAll("#escalaForm input")].forEach(i=>{ i.disabled=!admLogado; });
 }
 
-// Funções ADM
+// ADM funções
 function salvarEscala(){
-  if(!admLogado) return alert("Somente ADM pode salvar");
-  const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
-  const escala={};
-  [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ escala[i.id]=i.value; });
-  localStorage.setItem(chave,JSON.stringify(escala));
-  alert("Escala salva!");
+if(!admLogado) return alert("Somente ADM pode salvar");
+const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
+const escala={};
+[...document.querySelectorAll("#escalaForm input")].forEach(i=>{ escala[i.id]=i.value; });
+localStorage.setItem(chave,JSON.stringify(escala));
+alert("Escala salva!");
 }
 
 function editarEscala(){ if(!admLogado) return; alert("Modo edição liberado"); }
 function excluirEscala(){ if(!admLogado) return; const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`; localStorage.removeItem(chave); document.getElementById("escalaForm").reset(); alert("Escala excluída"); }
-function alterarSenha(){ if(!admLogado) return; let nova=prompt("Nova senha 6 dígitos:"); if(nova && nova.length===6 && /^\d{6}$/.test(nova)){ senhaADM=nova; localStorage.setItem("senhaADM",nova
+function alterarSenha(){ if(!admLogado) return; let nova=prompt("Nova senha 6 dígitos:"); if(nova && nova.length===6 && /^\d{6}$/.test(nova)){ senhaADM=nova; localStorage.setItem("senhaADM",nova); alert("Senha alterada!"); }else{ alert("Senha inválida!"); } }
+</script>
+</main>
+</body>
+</html>
