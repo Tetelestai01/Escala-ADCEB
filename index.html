@@ -7,17 +7,25 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       background: #f4f6f8;
       margin: 0;
-      padding: 20px;
+      padding: 15px;
+      text-align: center;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
     }
     h1 {
+      font-size: 20px;
+      margin: 0;
       color: #2c3e50;
     }
     .btn {
       display: inline-block;
-      margin: 5px;
+      margin: 4px;
       padding: 10px 15px;
       font-size: 14px;
       border: none;
@@ -29,29 +37,39 @@
     .btn:active {
       background: #2980b9;
     }
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
     .form-group {
-      margin: 15px 0;
+      margin: 12px 0;
+      text-align: left;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 3px;
     }
     input {
-      width: 90%;
+      width: 100%;
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      max-length: 25;
+      font-size: 14px;
     }
     #resultado {
       margin-top: 20px;
-      padding: 15px;
+      padding: 10px;
       background: #ecf0f1;
       border-radius: 10px;
+      font-size: 14px;
+      text-align: left;
     }
   </style>
 </head>
 <body>
-  <h1>Escala ADCEB</h1>
+  <header>
+    <h1>Escala ADCEB</h1>
+    <button id="editarBtn" class="btn hidden">Editar</button>
+  </header>
+
   <p>Escolha o mês:</p>
   <div id="meses"></div>
 
@@ -64,29 +82,38 @@
     <h2 id="dataSelecionada"></h2>
     <form id="escalaForm">
       <div class="form-group">
-        Pregador: <br><input type="text" maxlength="25">
+        <label>Pregador:</label>
+        <input type="text" maxlength="25" name="Pregador">
       </div>
       <div class="form-group">
-        Direção do Culto: <br><input type="text" maxlength="25">
+        <label>Direção do Culto:</label>
+        <input type="text" maxlength="25" name="Direcao">
       </div>
       <div class="form-group">
-        Porta Principal: <br><input type="text" maxlength="25">
+        <label>Porta Principal:</label>
+        <input type="text" maxlength="25" name="Principal">
       </div>
       <div class="form-group">
-        Porta Lateral: <br><input type="text" maxlength="25">
+        <label>Porta Lateral:</label>
+        <input type="text" maxlength="25" name="Lateral">
       </div>
       <div class="form-group">
-        Porta Altar: <br><input type="text" maxlength="25">
+        <label>Porta Altar:</label>
+        <input type="text" maxlength="25" name="Altar">
       </div>
       <div class="form-group">
-        Estacionamento: <br><input type="text" maxlength="25">
+        <label>Estacionamento:</label>
+        <input type="text" maxlength="25" name="Estacionamento">
       </div>
       <div class="form-group">
-        Bebedouro e Banheiros: <br><input type="text" maxlength="25">
+        <label>Bebedouro e Banheiros:</label>
+        <input type="text" maxlength="25" name="Bebedouro">
       </div>
       <div class="form-group">
-        Sonoplastia: <br><input type="text" maxlength="25">
+        <label>Sonoplastia:</label>
+        <input type="text" maxlength="25" name="Sonoplastia">
       </div>
+      <button type="button" class="btn" onclick="salvarEscala()">Salvar</button>
     </form>
     <div id="resultado"></div>
   </div>
@@ -99,9 +126,13 @@
     const diasBotoes = document.getElementById("diasBotoes");
     const formulario = document.getElementById("formulario");
     const dataSelecionada = document.getElementById("dataSelecionada");
+    const escalaForm = document.getElementById("escalaForm");
+    const resultado = document.getElementById("resultado");
+    const editarBtn = document.getElementById("editarBtn");
 
     let mesEscolhido = null;
     let diaEscolhido = null;
+    let editavel = true;
 
     // Criar botões de meses
     meses.forEach((m, i) => {
@@ -115,7 +146,7 @@
       mesesDiv.appendChild(btn);
     });
 
-    // Mostrar dias do mês
+    // Mostrar dias
     function mostrarDias(mesNome) {
       diasDiv.classList.remove("hidden");
       diasBotoes.innerHTML = "";
@@ -132,11 +163,68 @@
       }
     }
 
-    // Mostrar formulário da escala
+    // Mostrar formulário
     function mostrarFormulario(mesNome, dia) {
       formulario.classList.remove("hidden");
       dataSelecionada.textContent = `Data: ${dia} de ${mesNome}`;
+      carregarEscala();
     }
+
+    // Salvar no localStorage
+    function salvarEscala() {
+      const dados = {};
+      [...escalaForm.elements].forEach(el => {
+        if (el.name) dados[el.name] = el.value;
+      });
+      localStorage.setItem(`escala-${mesEscolhido}-${diaEscolhido}`, JSON.stringify(dados));
+      mostrarResultado(dados);
+      bloquearCampos();
+    }
+
+    // Carregar se já existir
+    function carregarEscala() {
+      const salvo = localStorage.getItem(`escala-${mesEscolhido}-${diaEscolhido}`);
+      if (salvo) {
+        const dados = JSON.parse(salvo);
+        for (let key in dados) {
+          const campo = escalaForm.elements[key];
+          if (campo) campo.value = dados[key];
+        }
+        mostrarResultado(dados);
+        bloquearCampos();
+      } else {
+        limparCampos();
+        desbloquearCampos();
+        resultado.innerHTML = "";
+      }
+    }
+
+    function mostrarResultado(dados) {
+      resultado.innerHTML = "<h3>Escala Salva:</h3>";
+      for (let key in dados) {
+        resultado.innerHTML += `<strong>${key}:</strong> ${dados[key]}<br>`;
+      }
+    }
+
+    function bloquearCampos() {
+      [...escalaForm.elements].forEach(el => el.disabled = true);
+      editarBtn.classList.remove("hidden");
+      editavel = false;
+    }
+
+    function desbloquearCampos() {
+      [...escalaForm.elements].forEach(el => el.disabled = false);
+      editarBtn.classList.add("hidden");
+      editavel = true;
+    }
+
+    function limparCampos() {
+      [...escalaForm.elements].forEach(el => {
+        if (el.name) el.value = "";
+      });
+    }
+
+    editarBtn.onclick = () => desbloquearCampos();
   </script>
 </body>
 </html>
