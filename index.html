@@ -24,7 +24,7 @@
       color: #2c3e50;
     }
     .btn {
-      padding: 12px;
+      padding: 10px;
       border: none;
       border-radius: 10px;
       background: linear-gradient(135deg, #3498db, #2980b9);
@@ -32,11 +32,11 @@
       font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      transition: transform 0.15s ease-in-out, background 0.3s;
+      margin: 4px;
     }
     .btn:hover {
       background: linear-gradient(135deg, #2980b9, #1c5985);
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
     .grid {
       display: grid;
@@ -64,13 +64,17 @@
       border-radius: 6px;
       font-size: 14px;
     }
-    #resultado {
+    #resultado, #relatorio {
       margin-top: 20px;
       padding: 10px;
       background: #ecf0f1;
       border-radius: 10px;
       font-size: 14px;
       text-align: left;
+    }
+    .alerta {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -91,41 +95,19 @@
   <div id="formulario" class="hidden">
     <h2 id="dataSelecionada"></h2>
     <form id="escalaForm">
-      <div class="form-group">
-        <label>Pregador:</label>
-        <input type="text" maxlength="25" name="Pregador">
-      </div>
-      <div class="form-group">
-        <label>Direção do Culto:</label>
-        <input type="text" maxlength="25" name="Direcao">
-      </div>
-      <div class="form-group">
-        <label>Porta Principal:</label>
-        <input type="text" maxlength="25" name="Principal">
-      </div>
-      <div class="form-group">
-        <label>Porta Lateral:</label>
-        <input type="text" maxlength="25" name="Lateral">
-      </div>
-      <div class="form-group">
-        <label>Porta Altar:</label>
-        <input type="text" maxlength="25" name="Altar">
-      </div>
-      <div class="form-group">
-        <label>Estacionamento:</label>
-        <input type="text" maxlength="25" name="Estacionamento">
-      </div>
-      <div class="form-group">
-        <label>Bebedouro e Banheiros:</label>
-        <input type="text" maxlength="25" name="Bebedouro">
-      </div>
-      <div class="form-group">
-        <label>Sonoplastia:</label>
-        <input type="text" maxlength="25" name="Sonoplastia">
-      </div>
+      <div class="form-group"><label>Pregador:</label><input type="text" maxlength="25" name="Pregador"></div>
+      <div class="form-group"><label>Direção do Culto:</label><input type="text" maxlength="25" name="Direcao"></div>
+      <div class="form-group"><label>Porta Principal:</label><input type="text" maxlength="25" name="Principal"></div>
+      <div class="form-group"><label>Porta Lateral:</label><input type="text" maxlength="25" name="Lateral"></div>
+      <div class="form-group"><label>Porta Altar:</label><input type="text" maxlength="25" name="Altar"></div>
+      <div class="form-group"><label>Estacionamento:</label><input type="text" maxlength="25" name="Estacionamento"></div>
+      <div class="form-group"><label>Bebedouro e Banheiros:</label><input type="text" maxlength="25" name="Bebedouro"></div>
+      <div class="form-group"><label>Sonoplastia:</label><input type="text" maxlength="25" name="Sonoplastia"></div>
       <button type="button" class="btn" onclick="salvarEscala()">Salvar</button>
     </form>
     <div id="resultado"></div>
+    <button type="button" class="btn" onclick="gerarRelatorio()">Gerar Relatório do Mês</button>
+    <div id="relatorio"></div>
   </div>
 
   <script>
@@ -139,6 +121,7 @@
     const escalaForm = document.getElementById("escalaForm");
     const resultado = document.getElementById("resultado");
     const editarBtn = document.getElementById("editarBtn");
+    const relatorioDiv = document.getElementById("relatorio");
 
     let mesEscolhido = null;
     let diaEscolhido = null;
@@ -233,6 +216,29 @@
     }
 
     editarBtn.onclick = () => desbloquearCampos();
+
+    // --------- GERAR RELATÓRIO ---------
+    function gerarRelatorio() {
+      relatorioDiv.innerHTML = `<h3>Relatório de ${meses[mesEscolhido-1]}</h3>`;
+      let anterior = {}; // guarda escala do dia anterior
+
+      for (let d = 1; d <= 31; d++) {
+        const salvo = localStorage.getItem(`escala-${mesEscolhido}-${d}`);
+        if (salvo) {
+          const dados = JSON.parse(salvo);
+          relatorioDiv.innerHTML += `<p><strong>Dia ${d}:</strong><br>`;
+          for (let key in dados) {
+            let alerta = "";
+            if (anterior[key] && anterior[key] === dados[key] && dados[key] !== "") {
+              alerta = " <span class='alerta'>⚠️ repetido do dia anterior</span>";
+            }
+            relatorioDiv.innerHTML += `${key}: ${dados[key]}${alerta}<br>`;
+          }
+          relatorioDiv.innerHTML += "</p>";
+          anterior = dados;
+        }
+      }
+    }
   </script>
 </body>
 </html>
