@@ -3,49 +3,172 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESCALA ADCEB</title>
+<title>ESCALA ADCEB - 2025/2027</title>
 <style>
+/* ----------------------------------------------------- */
+/* NOVO DESIGN E MELHORIA DE UX */
+/* ----------------------------------------------------- */
+:root {
+    --color-primary: #3498db;
+    --color-secondary: #2ecc71;
+    --color-text: #2c3e50;
+    --color-bg: #ecf0f1;
+    --color-card-bg: #ffffff;
+    --color-danger: #e74c3c;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:"Segoe UI",Arial,sans-serif;background:#f4f6f8;color:#2c3e50;padding-top:60px;}
-header{position:fixed;top:0;left:0;width:100%;background:#2c3e50;color:white;padding:15px;font-size:20px;text-align:center;z-index:1000;}
+body{
+    font-family:'Roboto', 'Segoe UI', Arial, sans-serif;
+    background:var(--color-bg);
+    color:var(--color-text);
+    padding-top:70px; /* Mais espaço para o cabeçalho */
+}
+
+/* Header (HUD) */
+header{
+    position:fixed;top:0;left:0;width:100%;
+    background:var(--color-primary);
+    color:white;
+    padding:12px 15px; 
+    font-size:20px;
+    z-index:1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+header #header-title {flex-grow: 1;text-align: center;}
+.header-btn {
+    position: absolute;left: 15px;
+    background: none;border: none;
+    color: white;font-size: 16px;
+    cursor: pointer;padding: 5px 10px;
+    border-radius: 6px;transition: background 0.2s;
+}
+.header-btn:hover {background: rgba(255, 255, 255, 0.15);}
+
 main{padding:20px;}
-h1{text-align:center;margin-bottom:20px;}
-.btn{display:inline-block;margin:5px;padding:12px 18px;font-size:16px;border:none;border-radius:10px;background:#7f8c8d;color:white;cursor:pointer;transition:all 0.2s;}
-.btn:hover{background:#636e72;}
-.btn:active{transform:scale(0.96);}
-.btn-secondary{background:#95a5a6;}
-.btn-danger{background:#e74c3c;}
+h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
+
+/* Cards (Telas) */
+.card{
+    background:var(--color-card-bg);
+    border-radius:16px; /* Bordas mais arredondadas */
+    padding:25px;
+    margin:20px auto;
+    max-width:400px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.1); /* Sombra mais suave */
+}
 .hidden{display:none;}
-.card{background:white;border-radius:12px;padding:20px;margin:20px auto;max-width:400px;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
-.form-group{margin-bottom:12px;}
-.form-group label{display:block;font-size:14px;margin-bottom:4px;color:#34495e;}
-.form-group input{width:100%;padding:8px 10px;border:1px solid #ccd1d9;border-radius:6px;font-size:14px;}
-#anos,#meses,#dias-container{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:10px 0;}
-/* Novo container para o calendário */
+
+/* Botões */
+.btn, .btn-secondary, .btn-danger{
+    display:block; /* Botões de ação principais em bloco */
+    width:calc(100% - 10px); /* Ocupa a largura total do card, com margem */
+    margin:10px auto;
+    padding:14px 18px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    text-align:center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.btn{background:var(--color-primary);color:white;}
+.btn:hover{background:#2980b9;}
+.btn-secondary{background:#95a5a6;color:white;}
+.btn-secondary:hover{background:#7f8c8d;}
+.btn-danger{background:var(--color-danger);color:white;}
+.btn-danger:hover{background:#c0392b;}
+.btn:active, .btn-secondary:active, .btn-danger:active{transform:scale(0.98);}
+
+/* Inputs e Formulário */
+.form-group{margin-bottom:15px;}
+.form-group label{display:block;font-size:14px;margin-bottom:6px;color:var(--color-text);}
+.form-group input{
+    width:100%;padding:10px 12px;
+    border:1px solid #ccd1d9;
+    border-radius:8px;
+    font-size:16px;
+    transition:border-color 0.3s;
+}
+.form-group input:focus{border-color:var(--color-primary);outline:none;}
+
+/* Controles de Navegação (Anos, Meses, Dias) */
+#anos, #meses, #dias-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin:15px 0;
+}
+#anos .btn, #meses .btn{
+    display:inline-block; /* Fazem parte de um grupo, então não são 100% largura */
+    width:auto;
+    padding:10px 15px;
+    font-size:15px;
+}
+/* Calendário (Dias) */
 #dias-container{display:block;}
-#dias-header, #dias{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:5px;}
-#dias-header div{font-weight:bold;font-size:12px;padding:5px 0;color:#34495e;}
-#dias .btn{padding:8px 5px;margin:0;font-size:14px;} /* Ajuste no padding do botão dia */
-#resultado{margin-top:15px;padding:10px;border-radius:8px;font-size:14px;text-align:center;}
-#resultado.sucesso{background:#2ecc71;color:white;}
-#resultado.erro{background:#e74c3c;color:white;}
+#dias-header, #dias{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    text-align:center;
+    gap:4px; /* Espaçamento menor entre os dias */
+}
+#dias-header div{
+    font-weight:600; /* Mais espessura */
+    font-size:11px;
+    padding:8px 0;
+    color:var(--color-primary);
+}
+#dias .btn{
+    padding:10px 5px;
+    margin:0;
+    font-size:14px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f4f6f8; /* Botões de dia mais claros */
+    color:var(--color-text);
+    box-shadow:none;
+}
+#dias .btn:hover{background:#dcdfe4;}
+#dias .btn:active{background:var(--color-primary); color:white; transform:none;}
+
+/* Resultado/Mensagens */
+#resultado{
+    margin-top:20px;
+    padding:12px;
+    border-radius:10px;
+    font-size:15px;
+    text-align:center;
+    font-weight:bold;
+}
+#resultado.sucesso{background:var(--color-secondary);color:white;}
+#resultado.erro{background:var(--color-danger);color:white;}
 </style>
 </head>
 <body>
-<header>ESCALA ADCEB</header>
+<header>
+    <button class="header-btn hidden" id="btnVoltarInicialHeader" onclick="voltarTelaInicial()">🏠 Início</button>
+    <div id="header-title">ESCALA ADCEB</div>
+</header>
 <main>
 
 <div id="telaInicial" class="card">
-<h1>ESCALA ADCEB</h1>
-<button class="btn" onclick="entrarUsuario()">Entrar como Usuário</button>
-<button class="btn" onclick="entrarADM()">Entrar como ADM</button>
+<h1>Seja Bem-vindo!</h1>
+<button class="btn" onclick="entrarUsuario()">Visualizar Escala (Usuário)</button>
+<button class="btn-secondary" onclick="entrarADM()">Gerenciar Escala (ADM)</button>
 </div>
 
 <div id="telaADM" class="card hidden">
-<h2>Login ADM</h2>
+<h2>Acesso ADM</h2>
 <div class="form-group">
-<label>Senha 6 dígitos</label>
-<input type="password" id="senhaADMInput" maxlength="6" placeholder="Digite a senha">
+<label>Senha de Acesso:</label>
+<input type="password" id="senhaADMInput" maxlength="6" placeholder="Digite a senha de 6 dígitos">
 </div>
 <button class="btn" onclick="verificarADM()">Entrar</button>
 <button class="btn-secondary" onclick="voltarTela()">Voltar</button>
@@ -53,15 +176,15 @@ h1{text-align:center;margin-bottom:20px;}
 </div>
 
 <div id="telaUsuario" class="card hidden">
-<h2>Visualizar Escala</h2>
+<h2>Selecione a Data</h2>
 <div id="anos"></div>
 <div id="meses" class="hidden"></div>
-
 <div id="dias-container" class="hidden">
     <div id="dias-header"></div> 
     <div id="dias"></div>
 </div>
 <button class="btn-secondary" id="btnVoltarUsuario" onclick="voltarTela()">Voltar</button>
+
 <div id="formEscala" class="hidden">
 <h3 id="dataSelecionada"></h3>
 <form id="escalaForm">
@@ -87,18 +210,32 @@ h1{text-align:center;margin-bottom:20px;}
 <script>
 let senhaADM = localStorage.getItem("senhaADM") || "025563";
 let admLogado = false;
-let anoSelecionado = new Date().getFullYear();
+// Ano inicial para a escala
+const ANO_INICIAL_ESCALA = 2025; 
+const ANO_FINAL_ESCALA = ANO_INICIAL_ESCALA + 2; // 2027
+let anoSelecionado = new Date().getFullYear(); 
+if (anoSelecionado < ANO_INICIAL_ESCALA || anoSelecionado > ANO_FINAL_ESCALA) {
+    anoSelecionado = ANO_INICIAL_ESCALA;
+}
+
 let mesSelecionado = null;
 let diaSelecionado = null;
 const mesesArray=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const diasSemanaArray = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 
-// --- NOVAS VARIÁVEIS DE NAVEGAÇÃO ---
+// --- FUNÇÕES DE NAVEGAÇÃO COM HISTÓRICO (Mantidas e Otimizadas) ---
 const telas = ["telaInicial", "telaADM", "telaUsuario", "anos", "meses", "dias-container", "formEscala"];
 let historyStack = []; 
 let currentScreen = "telaInicial";
 
-// --- NOVAS FUNÇÕES DE NAVEGAÇÃO COM HISTÓRICO ---
+function updateHeaderButton() {
+    const headerBtn = document.getElementById("btnVoltarInicialHeader");
+    if (currentScreen !== "telaInicial") {
+        headerBtn.classList.remove("hidden");
+    } else {
+        headerBtn.classList.add("hidden");
+    }
+}
 
 function hideAllScreens() {
     telas.forEach(id => {
@@ -118,12 +255,17 @@ function navigateTo(screenId, pushHistory = true) {
     if (newScreen) newScreen.classList.remove("hidden");
     currentScreen = screenId;
     
-    // Mostra o botão Voltar na telaUsuario apenas se não estiver na tela inicial de anos.
-    if (screenId === "telaUsuario") {
-        document.getElementById("btnVoltarUsuario").classList.remove("hidden");
-    } else {
-        const btnVoltar = document.getElementById("btnVoltarUsuario");
-        if (btnVoltar) btnVoltar.classList.add("hidden");
+    updateHeaderButton();
+
+    const btnVoltarUsuario = document.getElementById("btnVoltarUsuario");
+    if (btnVoltarUsuario) {
+        // Mostra Voltar no card se estiver em qualquer tela do fluxo de usuário
+        const showCardVoltar = screenId === "anos" || screenId === "meses" || screenId === "dias-container" || screenId === "formEscala";
+        if (showCardVoltar) {
+            btnVoltarUsuario.classList.remove("hidden");
+        } else {
+            btnVoltarUsuario.classList.add("hidden");
+        }
     }
 }
 
@@ -132,13 +274,13 @@ function voltarTela() {
         const previousScreen = historyStack.pop();
         navigateTo(previousScreen, false); 
         
-        // Lógica adicional para recriar o estado da tela
+        // Recria o estado da tela
         if (previousScreen === "anos") iniciarAno(false);
-        if (previousScreen === "meses") gerarMeses(false);
-        if (previousScreen === "dias-container") gerarDias(mesSelecionado, false);
+        else if (previousScreen === "meses") gerarMeses(false);
+        else if (previousScreen === "dias-container") gerarDias(mesSelecionado, false);
         
     } else {
-        navigateTo("telaInicial", false);
+        voltarTelaInicial();
     }
 }
 
@@ -173,18 +315,23 @@ function entrarUsuario(){
     iniciarAno();
 }
 
-// Gerar anos
+// Gerar anos (Limitado a 2025-2027)
 function iniciarAno(pushHistory = true){
     navigateTo("anos", pushHistory);
     const anosDiv = document.getElementById("anos");
     anosDiv.innerHTML="";
     document.getElementById("telaUsuario").classList.remove("hidden"); 
     
-    for(let y=anoSelecionado-2; y<=anoSelecionado+2; y++){
+    // Loop limitado de 2025 a 2027
+    for(let y=ANO_INICIAL_ESCALA; y<=ANO_FINAL_ESCALA; y++){
         let btn = document.createElement("button");
         btn.className="btn";
+        if (y === anoSelecionado) btn.classList.add('btn-primary'); // Destaca ano selecionado
         btn.innerText=y;
-        btn.onclick=()=>{ anoSelecionado=y; gerarMeses(); };
+        btn.onclick=()=>{ 
+            anoSelecionado=y; 
+            gerarMeses(); 
+        };
         anosDiv.appendChild(btn);
     }
 }
@@ -206,7 +353,7 @@ function gerarMeses(pushHistory = true){
     });
 }
 
-// Gerar dias (Calendário Atualizado)
+// Gerar dias (Calendário)
 function gerarDias(mes, pushHistory = true){
     navigateTo("dias-container", pushHistory);
     document.getElementById("telaUsuario").classList.remove("hidden"); 
@@ -216,7 +363,6 @@ function gerarDias(mes, pushHistory = true){
     diasDiv.innerHTML="";
     headerDiv.innerHTML="";
     
-    // Adiciona o cabeçalho dos dias da semana
     diasSemanaArray.forEach(dia => {
         let headerItem = document.createElement("div");
         headerItem.innerText = dia;
@@ -224,21 +370,14 @@ function gerarDias(mes, pushHistory = true){
     });
 
     const qtdDias = new Date(anoSelecionado, mes, 0).getDate();
-    
-    // Calcula o dia da semana do primeiro dia do mês (0=Dom, 1=Seg, ...)
     let primeiroDiaMes = new Date(anoSelecionado, mes - 1, 1).getDay();
-    
-    // Ajusta o índice para começar na Segunda-feira (0=Seg, ..., 6=Dom)
-    // Se for 0 (Domingo), o índice correto para Seg é 6 (última posição)
     let startDayIndex = (primeiroDiaMes === 0) ? 6 : primeiroDiaMes - 1; 
 
-    // Preenche espaços vazios para alinhar o dia 1 ao seu dia da semana
     for(let i=0; i < startDayIndex; i++){
         let empty = document.createElement("div");
         diasDiv.appendChild(empty);
     }
 
-    // Cria os botões para cada dia do mês
     for(let d=1; d<=qtdDias; d++){
         let btn = document.createElement("button");
         btn.className="btn";
@@ -248,23 +387,28 @@ function gerarDias(mes, pushHistory = true){
     }
 }
 
-// Mostrar formulário
+// Mostrar formulário (Mantém os dados salvos)
 function mostrarFormulario(){
     navigateTo("formEscala");
-    
     document.getElementById("telaUsuario").classList.remove("hidden"); 
-    
     const formDiv = document.getElementById("formEscala");
     formDiv.classList.remove("hidden");
     document.getElementById("dataSelecionada").innerText = `${diaSelecionado} de ${mesesArray[mesSelecionado-1]} de ${anoSelecionado}`;
+    
+    // --- LÓGICA DE PERSISTÊNCIA (invariante) ---
     const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
     const escala = JSON.parse(localStorage.getItem(chave));
+    
     if(escala){
         Object.keys(escala).forEach(k=>{
             let input = document.getElementById(k);
             if(input) input.value = escala[k];
         });
-    }else{ document.getElementById("escalaForm").reset(); }
+    }else{ 
+        document.getElementById("escalaForm").reset(); 
+    }
+    
+    // Determina se os campos devem ser editáveis
     [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ i.disabled=!admLogado; });
     if(admLogado) document.getElementById("botoesADM").classList.remove("hidden");
 }
@@ -275,21 +419,34 @@ function salvarEscala(){
     const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
     const escala={};
     [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ escala[i.id]=i.value; });
+    
+    // Salva a escala no localStorage (persistência)
     localStorage.setItem(chave,JSON.stringify(escala));
-    alert("Escala salva!");
+    alert("Escala salva permanentemente para esta data!");
 }
 
-function editarEscala(){ if(!admLogado) return; alert("Modo edição liberado"); }
-function excluirEscala(){ if(!admLogado) return; const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`; localStorage.removeItem(chave); document.getElementById("escalaForm").reset(); alert("Escala excluída"); }
-function alterarSenha(){ if(!admLogado) return; let nova=prompt("Nova senha 6 dígitos:"); if(nova && nova.length===6 && /^\d{6}$/.test(nova)){ senhaADM=nova; localStorage.setItem("senhaADM",nova); alert("Senha alterada!"); }else{ alert("Senha inválida!"); } }
+function editarEscala(){ 
+    if(!admLogado) return; 
+    alert("Modo edição liberado (pode editar campos acima). Clique em 'Salvar' após as alterações."); 
+}
 
-// Inicializa a tela ao carregar
-document.addEventListener('DOMContentLoaded', () => {
-    hideAllScreens();
-    document.getElementById("telaInicial").classList.remove("hidden");
-    document.getElementById("btnVoltarUsuario").classList.add("hidden");
-});
-</script>
-</main>
-</body>
-</html>
+function excluirEscala(){ 
+    if(!admLogado) return; 
+    const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`; 
+    
+    if (confirm(`Tem certeza que deseja EXCLUIR a escala para ${document.getElementById("dataSelecionada").innerText}?`)) {
+        localStorage.removeItem(chave); 
+        document.getElementById("escalaForm").reset(); 
+        alert("Escala excluída permanentemente."); 
+    }
+}
+
+function alterarSenha(){ 
+    if(!admLogado) return; 
+    let nova=prompt("Digite a NOVA senha de 6 dígitos para o ADM:"); 
+    if(nova && nova.length===6 && /^\d{6}$/.test(nova)){ 
+        senhaADM=nova; 
+        localStorage.setItem("senhaADM",nova); 
+        alert("Senha ADM alterada com sucesso!"); 
+    }else{ 
+        alert
