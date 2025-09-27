@@ -83,18 +83,6 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
 .btn-danger:hover{background:#c0392b;}
 .btn:active, .btn-secondary:active, .btn-danger:active{transform:scale(0.98);}
 
-/* Inputs e Formulário */
-.form-group{margin-bottom:15px;}
-.form-group label{display:block;font-size:14px;margin-bottom:6px;color:var(--color-text);}
-.form-group input{
-    width:100%;padding:10px 12px;
-    border:1px solid #ccd1d9;
-    border-radius:8px;
-    font-size:16px;
-    transition:border-color 0.3s;
-}
-.form-group input:focus{border-color:var(--color-primary);outline:none;}
-
 /* Controles de Navegação (Anos, Meses, Dias) */
 #anos, #meses, #dias-container{
     display:flex;
@@ -136,7 +124,8 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
     box-shadow:none;
 }
 #dias .btn:hover{background:#dcdfe4;}
-#dias .btn:active{background:var(--color-primary); color:white; transform:none;}
+#dias .btn-active{background:var(--color-primary); color:white;}
+#dias .btn:active{transform:none;}
 
 /* Resultado/Mensagens */
 #resultado{
@@ -210,12 +199,15 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
 <script>
 let senhaADM = localStorage.getItem("senhaADM") || "025563";
 let admLogado = false;
-// Ano inicial para a escala
+// Definido conforme a regra de 2025 para 2 anos a frente
 const ANO_INICIAL_ESCALA = 2025; 
 const ANO_FINAL_ESCALA = ANO_INICIAL_ESCALA + 2; // 2027
+// Inicia no ano atual (2025)
 let anoSelecionado = new Date().getFullYear(); 
-if (anoSelecionado < ANO_INICIAL_ESCALA || anoSelecionado > ANO_FINAL_ESCALA) {
+if (anoSelecionado < ANO_INICIAL_ESCALA) {
     anoSelecionado = ANO_INICIAL_ESCALA;
+} else if (anoSelecionado > ANO_FINAL_ESCALA) {
+    anoSelecionado = ANO_FINAL_ESCALA;
 }
 
 let mesSelecionado = null;
@@ -223,7 +215,7 @@ let diaSelecionado = null;
 const mesesArray=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const diasSemanaArray = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 
-// --- FUNÇÕES DE NAVEGAÇÃO COM HISTÓRICO (Mantidas e Otimizadas) ---
+// --- FUNÇÕES DE NAVEGAÇÃO COM HISTÓRICO ---
 const telas = ["telaInicial", "telaADM", "telaUsuario", "anos", "meses", "dias-container", "formEscala"];
 let historyStack = []; 
 let currentScreen = "telaInicial";
@@ -246,8 +238,13 @@ function hideAllScreens() {
     document.getElementById("botoesADM").classList.add("hidden");
 }
 
+/**
+ * Navega para uma nova tela, gerenciando o histórico e a visibilidade dos botões de voltar.
+ * @param {string} screenId - O ID da tela para onde navegar.
+ * @param {boolean} pushHistory - Se deve adicionar a tela atual ao histórico (true para ir para frente).
+ */
 function navigateTo(screenId, pushHistory = true) {
-    if (currentScreen && pushHistory) {
+    if (currentScreen && pushHistory && currentScreen !== screenId) {
         historyStack.push(currentScreen);
     }
     hideAllScreens();
@@ -259,8 +256,8 @@ function navigateTo(screenId, pushHistory = true) {
 
     const btnVoltarUsuario = document.getElementById("btnVoltarUsuario");
     if (btnVoltarUsuario) {
-        // Mostra Voltar no card se estiver em qualquer tela do fluxo de usuário
-        const showCardVoltar = screenId === "anos" || screenId === "meses" || screenId === "dias-container" || screenId === "formEscala";
+        // O botão "Voltar" do card deve aparecer em qualquer passo da navegação do calendário
+        const showCardVoltar = screenId !== "telaInicial" && screenId !== "telaADM";
         if (showCardVoltar) {
             btnVoltarUsuario.classList.remove("hidden");
         } else {
@@ -271,7 +268,17 @@ function navigateTo(screenId, pushHistory = true) {
 
 function voltarTela() {
     if (historyStack.length > 0) {
-        const previousScreen = historyStack.pop();
+        let previousScreen = historyStack.pop();
+        
+        // Se a tela anterior era a telaUsuario, precisamos saber o estado interno (anos, meses, dias)
+        // O último estado que levava ao anterior deve ser restaurado.
+        
+        // Mapeia o estado mais granular da telaUsuario
+        if (currentScreen === "formEscala") previousScreen = "dias-container";
+        else if (currentScreen === "dias-container") previousScreen = "meses";
+        else if (currentScreen === "meses") previousScreen = "anos";
+        else if (currentScreen === "anos") previousScreen = "telaUsuario"; // Voltar para a tela anterior ao entrar no calendário
+
         navigateTo(previousScreen, false); 
         
         // Recria o estado da tela
@@ -280,6 +287,7 @@ function voltarTela() {
         else if (previousScreen === "dias-container") gerarDias(mesSelecionado, false);
         
     } else {
+        // Se não tem histórico, volta para a tela inicial
         voltarTelaInicial();
     }
 }
@@ -322,16 +330,19 @@ function iniciarAno(pushHistory = true){
     anosDiv.innerHTML="";
     document.getElementById("telaUsuario").classList.remove("hidden"); 
     
-    // Loop limitado de 2025 a 2027
+    // Loop de 2025 a 2027
     for(let y=ANO_INICIAL_ESCALA; y<=ANO_FINAL_ESCALA; y++){
         let btn = document.createElement("button");
         btn.className="btn";
-        if (y === anoSelecionado) btn.classList.add('btn-primary'); // Destaca ano selecionado
+        if (y === anoSelecionado) btn.classList.add('btn-secondary'); // Destaca ano selecionado
         btn.innerText=y;
         btn.onclick=()=>{ 
             anoSelecionado=y; 
             gerarMeses(); 
         };
+        // Para que o botão não use a largura total do card
+        btn.style.width = 'auto'; 
+        btn.style.display = 'inline-block';
         anosDiv.appendChild(btn);
     }
 }
@@ -347,8 +358,12 @@ function gerarMeses(pushHistory = true){
     mesesArray.forEach((m,i)=>{
         let btn = document.createElement("button");
         btn.className="btn";
+        if (i+1 === mesSelecionado) btn.classList.add('btn-secondary'); // Destaca mês selecionado
         btn.innerText=m;
         btn.onclick=()=>{ mesSelecionado=i+1; gerarDias(i+1); };
+        // Para que o botão não use a largura total do card
+        btn.style.width = 'auto'; 
+        btn.style.display = 'inline-block';
         mesesDiv.appendChild(btn);
     });
 }
@@ -381,13 +396,14 @@ function gerarDias(mes, pushHistory = true){
     for(let d=1; d<=qtdDias; d++){
         let btn = document.createElement("button");
         btn.className="btn";
+        if (d === diaSelecionado) btn.classList.add('btn-active'); // Destaca dia selecionado
         btn.innerText=d;
         btn.onclick=()=>{ diaSelecionado=d; mostrarFormulario(); };
         diasDiv.appendChild(btn);
     }
 }
 
-// Mostrar formulário (Mantém os dados salvos)
+// Mostrar formulário
 function mostrarFormulario(){
     navigateTo("formEscala");
     document.getElementById("telaUsuario").classList.remove("hidden"); 
@@ -395,7 +411,6 @@ function mostrarFormulario(){
     formDiv.classList.remove("hidden");
     document.getElementById("dataSelecionada").innerText = `${diaSelecionado} de ${mesesArray[mesSelecionado-1]} de ${anoSelecionado}`;
     
-    // --- LÓGICA DE PERSISTÊNCIA (invariante) ---
     const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
     const escala = JSON.parse(localStorage.getItem(chave));
     
@@ -408,7 +423,6 @@ function mostrarFormulario(){
         document.getElementById("escalaForm").reset(); 
     }
     
-    // Determina se os campos devem ser editáveis
     [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ i.disabled=!admLogado; });
     if(admLogado) document.getElementById("botoesADM").classList.remove("hidden");
 }
@@ -420,7 +434,6 @@ function salvarEscala(){
     const escala={};
     [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ escala[i.id]=i.value; });
     
-    // Salva a escala no localStorage (persistência)
     localStorage.setItem(chave,JSON.stringify(escala));
     alert("Escala salva permanentemente para esta data!");
 }
