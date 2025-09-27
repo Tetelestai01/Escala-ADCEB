@@ -449,4 +449,18 @@ function alterarSenha(){
         localStorage.setItem("senhaADM",nova); 
         alert("Senha ADM alterada com sucesso!"); 
     }else{ 
-        alert
+        alert("Senha inválida! Deve ter exatamente 6 dígitos numéricos."); 
+    } 
+}
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
+    hideAllScreens();
+    document.getElementById("telaInicial").classList.remove("hidden");
+    document.getElementById("btnVoltarUsuario").classList.add("hidden");
+    updateHeaderButton();
+});
+</script>
+</main>
+</body>
+</html>
