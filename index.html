@@ -10,7 +10,7 @@
 /* ----------------------------------------------------- */
 :root {
     /* Cores baseadas na imagem */
-    --color-logo-brown: #a0846c; /* Marrom da logo */
+    --color-logo-brown: #a0846c; /* Marrom da logo (mantido para botões) */
     --color-text-brown: #5d4037; /* Marrom mais escuro para textos */
     --color-bg-light: #f7f2ed; /* Creme claro de fundo */
     --color-card-bg: #ffffff;   /* Branco para cards */
@@ -30,15 +30,15 @@ body{
 /* Header (HUD) com Logo e Título */
 header{
     position:fixed;top:0;left:0;width:100%;
-    background:var(--color-bg-light); /* Fundo claro para o header */
+    background:var(--color-bg-light); 
     color:var(--color-text-brown);
     padding:10px 15px; 
-    font-size:24px; /* Título maior */
+    font-size:24px; 
     z-index:1000;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Espaçamento entre logo/botão e título */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra mais sutil */
+    justify-content: space-between; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
 }
 header .header-left {
     display: flex;
@@ -46,26 +46,28 @@ header .header-left {
     gap: 10px;
 }
 header .header-left img {
-    height: 40px; /* Tamanho da logo */
+    height: 40px; 
     width: auto;
+    /* Ajuste para que a logo no header mantenha a cor do tema, se necessário */
+    /* filter: sepia(0.5) saturate(1.5) hue-rotate(330deg); */
 }
 header #header-title {
-    flex-grow: 1; /* Permite que o título ocupe o espaço central */
+    flex-grow: 1; 
     text-align: center;
     font-weight: bold;
     color: var(--color-text-brown);
-    font-size: 20px; /* Tamanho do texto no header */
+    font-size: 20px; 
 }
 .header-btn {
     background: none;border: none;
-    color: var(--color-text-brown); /* Cor do texto do botão */
+    color: var(--color-text-brown); 
     font-size: 16px;
     cursor: pointer;padding: 5px 10px;
     border-radius: 6px;transition: background 0.2s;
-    position: relative; /* Ajusta posicionamento do botão */
-    left: 0; /* Remove o left absoluto */
+    position: relative; 
+    left: 0; 
 }
-.header-btn:hover {background: rgba(0,0,0,0.05);} /* Hover mais suave */
+.header-btn:hover {background: rgba(0,0,0,0.05);} 
 
 main{padding:20px;}
 h1{text-align:center;margin-bottom:20px;color:var(--color-text-brown);}
@@ -88,16 +90,22 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-text-brown);}
     align-items: center;
     justify-content: center;
     text-align: center;
-    min-height: calc(100vh - 80px - 40px); /* Altura da tela - header - padding */
+    min-height: calc(100vh - 80px - 40px); 
     max-width: 100%; 
     margin: 0 auto; 
     padding-top: 0;
     padding-bottom: 0;
 }
+#telaInicial img {
+    height: 120px; /* Tamanho maior para a logo centralizada */
+    width: auto;
+    margin-bottom: 15px;
+    filter: invert(30%) sepia(20%) saturate(800%) hue-rotate(340deg) brightness(80%); /* Tenta dar um tom marrom à imagem preta */
+}
 #telaInicial h1 {
     font-size: 2.5em; 
     color: var(--color-text-brown);
-    margin-bottom: 30px; /* Aumentado o espaço após o título */
+    margin-bottom: 30px; 
     font-weight: bold;
 }
 #telaInicial .btn-container {
@@ -224,13 +232,14 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-text-brown);}
 <header>
     <div class="header-left">
         <button class="header-btn hidden" id="btnVoltarInicialHeader" onclick="voltarTelaInicial()">🏠</button>
-        <img src="https://i.ibb.co/L6V2y64/Whats-App-Image-2024-05-19-at-15-54-52.jpg" alt="Logo ADCEB">
+        <img src="uploaded:Preto cinza.png-186361a9-d65e-44ef-a6b6-34d688755b41" alt="Logo ADCEB">
     </div>
     <div id="header-title">ESCALAS ADCEB</div>
 </header>
 <main>
 
 <div id="telaInicial">
+    <img src="uploaded:Preto cinza.png-186361a9-d65e-44ef-a6b6-34d688755b41" alt="Logo ADCEB">
     <h1>ESCALAS ADCEB</h1>
     <div class="btn-container">
         <button class="btn" onclick="entrarUsuario()">Visualizar Escala</button>
@@ -321,6 +330,13 @@ const telas = ["telaInicial", "telaADM", "telaUsuario", "anos", "meses", "dias-c
 let historyStack = []; 
 let currentScreen = "telaInicial";
 
+// CORREÇÃO: Função auxiliar para garantir que a tela de calendário (telaUsuario)
+// é exibida corretamente antes de carregar o sub-menu (anos, meses, dias).
+function showCalendarScreen() {
+    document.getElementById("telaUsuario").classList.remove("hidden");
+    document.getElementById("btnVoltarUsuario").classList.remove("hidden");
+}
+
 function updateHeaderButton() {
     const headerBtn = document.getElementById("btnVoltarInicialHeader");
     if (currentScreen !== "telaInicial") {
@@ -353,7 +369,8 @@ function navigateTo(screenId, pushHistory = true) {
 
     const btnVoltarUsuario = document.getElementById("btnVoltarUsuario");
     if (btnVoltarUsuario) {
-        const showCardVoltar = screenId !== "telaInicial" && screenId !== "telaADM" && screenId !== "telaRelatorio";
+        // CORREÇÃO: O botão "Voltar" do calendário/ADM só deve sumir na telaInicial, telaADM ou telaRelatorio
+        const showCardVoltar = screenId === "anos" || screenId === "meses" || screenId === "dias-container" || screenId === "formEscala";
         if (showCardVoltar) {
             btnVoltarUsuario.classList.remove("hidden");
         } else {
@@ -363,7 +380,7 @@ function navigateTo(screenId, pushHistory = true) {
     
     if (screenId === "telaUsuario" && admLogado) {
         document.getElementById("btnGerarRelatorio").classList.remove("hidden");
-        document.getElementById("anos").classList.add("hidden"); 
+        document.getElementById("anos").classList.remove("hidden"); // Garante que a seleção de anos aparece ao entrar na telaUsuario
     }
 }
 
@@ -371,23 +388,27 @@ function voltarTela() {
     if (historyStack.length > 0) {
         let previousScreen = historyStack.pop();
         
+        // Lógica para navegação interna do calendário/relatório
         if (currentScreen === "formEscala") previousScreen = "dias-container";
         else if (currentScreen === "dias-container") previousScreen = "meses";
         else if (currentScreen === "meses") previousScreen = "anos";
-        else if (currentScreen === "anos") previousScreen = "telaUsuario";
+        else if (currentScreen === "anos" || previousScreen === "telaADM") previousScreen = "telaUsuario";
 
-        else if (currentScreen === "telaRelatorio") {
-            if(previousScreen === "semanasRelatorio") previousScreen = "mesesRelatorio";
-            else if(previousScreen === "mesesRelatorio") previousScreen = "anosRelatorio";
-            else if(previousScreen === "anosRelatorio") previousScreen = "telaUsuario";
-            else previousScreen = "telaUsuario"; 
-        }
+        // Lógica para navegação interna do Relatório
+        else if (currentScreen === "telaRelatorio") previousScreen = "telaUsuario";
+
+        else if (currentScreen === "anosRelatorio") previousScreen = "telaRelatorio";
+        else if (currentScreen === "mesesRelatorio") previousScreen = "anosRelatorio";
+        else if (currentScreen === "semanasRelatorio") previousScreen = "mesesRelatorio";
         
         navigateTo(previousScreen, false); 
         
-        if (previousScreen === "anos") iniciarAno(false);
-        else if (previousScreen === "meses") gerarMeses(false);
-        else if (previousScreen === "dias-container") gerarDias(mesSelecionado, false);
+        // Recria o estado da tela (aqui o bug de navegação foi corrigido)
+        if (previousScreen === "anos") { showCalendarScreen(); iniciarAno(false); }
+        else if (previousScreen === "meses") { showCalendarScreen(); gerarMeses(false); }
+        else if (previousScreen === "dias-container") { showCalendarScreen(); gerarDias(mesSelecionado, false); }
+        else if (previousScreen === "formEscala") { showCalendarScreen(); mostrarFormulario(false); }
+        else if (previousScreen === "telaUsuario") { showCalendarScreen(); iniciarAno(false); } 
 
         else if (previousScreen === "anosRelatorio") iniciarRelatorioAnos(false);
         else if (previousScreen === "mesesRelatorio") gerarRelatorioMeses(false);
@@ -412,7 +433,7 @@ function verificarADM(){
     if(senha === senhaADM){
         admLogado = true;
         navigateTo("telaUsuario"); 
-        iniciarAno(false); 
+        iniciarAno(true); // Manter true para empilhar o histórico
     }else{
         alert("Senha incorreta!");
     }
@@ -421,15 +442,14 @@ function verificarADM(){
 function entrarUsuario(){
     admLogado=false;
     navigateTo("telaUsuario");
-    iniciarAno(false); 
+    iniciarAno(true); // Manter true para empilhar o histórico
 }
 
 function iniciarAno(pushHistory = true){
+    showCalendarScreen(); // Garante que o container principal está visível
     navigateTo("anos", pushHistory);
     const anosDiv = document.getElementById("anos");
     anosDiv.innerHTML="";
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    document.getElementById("btnVoltarUsuario").classList.remove("hidden"); 
     
     for(let y=ANO_INICIAL_ESCALA; y<=ANO_FINAL_ESCALA; y++){
         let btn = document.createElement("button");
@@ -447,12 +467,10 @@ function iniciarAno(pushHistory = true){
 }
 
 function gerarMeses(pushHistory = true){
+    showCalendarScreen(); 
     navigateTo("meses", pushHistory);
     const mesesDiv = document.getElementById("meses");
     mesesDiv.innerHTML="";
-    
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    document.getElementById("btnVoltarUsuario").classList.remove("hidden");
     
     mesesArray.forEach((m,i)=>{
         let btn = document.createElement("button");
@@ -467,9 +485,8 @@ function gerarMeses(pushHistory = true){
 }
 
 function gerarDias(mes, pushHistory = true){
+    showCalendarScreen(); 
     navigateTo("dias-container", pushHistory);
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    document.getElementById("btnVoltarUsuario").classList.remove("hidden");
     
     const diasDiv = document.getElementById("dias");
     const headerDiv = document.getElementById("dias-header");
@@ -501,10 +518,9 @@ function gerarDias(mes, pushHistory = true){
     }
 }
 
-function mostrarFormulario(){
-    navigateTo("formEscala");
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    document.getElementById("btnVoltarUsuario").classList.remove("hidden");
+function mostrarFormulario(pushHistory = true){
+    showCalendarScreen(); 
+    navigateTo("formEscala", pushHistory);
     const formDiv = document.getElementById("formEscala");
     formDiv.classList.remove("hidden");
     document.getElementById("dataSelecionada").innerText = `${diaSelecionado} de ${mesesArray[mesSelecionado-1]} de ${anoSelecionado}`;
