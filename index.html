@@ -3,77 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESCALA ADCEB - 2025/2027</title>
+<title>ESCALA ADCEB - 2025/2027 (FIREBASE)</title>
 <style>
 /* ----------------------------------------------------- */
-/* NOVO DESIGN E MELHORIA DE UX */
+/* ESTILOS (MANTIDOS) */
 /* ----------------------------------------------------- */
 :root {
-    --color-primary: #3498db;
-    --color-secondary: #2ecc71;
-    --color-text: #2c3e50;
-    --color-bg: #ecf0f1;
-    --color-card-bg: #ffffff;
-    --color-danger: #e74c3c;
+    --color-primary: #3498db;
+    --color-secondary: #2ecc71;
+    --color-text: #2c3e50;
+    --color-bg: #ecf0f1;
+    --color-card-bg: #ffffff;
+    --color-danger: #e74c3c;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
-    font-family:'Roboto', 'Segoe UI', Arial, sans-serif;
-    background:var(--color-bg);
-    color:var(--color-text);
-    padding-top:70px; /* Mais espaço para o cabeçalho */
+    font-family:'Roboto', 'Segoe UI', Arial, sans-serif;
+    background:var(--color-bg);
+    color:var(--color-text);
+    padding-top:70px; 
 }
-
-/* Header (HUD) */
 header{
-    position:fixed;top:0;left:0;width:100%;
-    background:var(--color-primary);
-    color:white;
-    padding:12px 15px; 
-    font-size:20px;
-    z-index:1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position:fixed;top:0;left:0;width:100%;
+    background:var(--color-primary);
+    color:white;
+    padding:12px 15px; 
+    font-size:20px;
+    z-index:1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 header #header-title {flex-grow: 1;text-align: center;}
 .header-btn {
-    position: absolute;left: 15px;
-    background: none;border: none;
-    color: white;font-size: 16px;
-    cursor: pointer;padding: 5px 10px;
-    border-radius: 6px;transition: background 0.2s;
+    position: absolute;left: 15px;
+    background: none;border: none;
+    color: white;font-size: 16px;
+    cursor: pointer;padding: 5px 10px;
+    border-radius: 6px;transition: background 0.2s;
 }
 .header-btn:hover {background: rgba(255, 255, 255, 0.15);}
 
 main{padding:20px;}
 h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
 
-/* Cards (Telas) */
 .card{
-    background:var(--color-card-bg);
-    border-radius:16px; /* Bordas mais arredondadas */
-    padding:25px;
-    margin:20px auto;
-    max-width:400px;
-    box-shadow:0 6px 15px rgba(0,0,0,0.1); /* Sombra mais suave */
+    background:var(--color-card-bg);
+    border-radius:16px; 
+    padding:25px;
+    margin:20px auto;
+    max-width:400px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.1); 
 }
 .hidden{display:none;}
 
-/* Botões */
 .btn, .btn-secondary, .btn-danger, .btn-info{
-    display:block; /* Botões de ação principais em bloco */
-    width:calc(100% - 10px); /* Ocupa a largura total do card, com margem */
-    margin:10px auto;
-    padding:14px 18px;
-    font-size:16px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    transition:all 0.3s ease;
-    text-align:center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display:block; 
+    width:calc(100% - 10px); 
+    margin:10px auto;
+    padding:14px 18px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    text-align:center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .btn{background:var(--color-primary);color:white;}
 .btn:hover{background:#2980b9;}
@@ -82,85 +78,80 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
 .btn-danger{background:var(--color-danger);color:white;}
 .btn-danger:hover{background:#c0392b;}
 .btn-info{background:#f1c40f;color:white;}
-.btn-info:hover{background:#e67e22;} /* Cor para o novo botão de relatório */
+.btn-info:hover{background:#e67e22;} 
 .btn:active, .btn-secondary:active, .btn-danger:active, .btn-info:active{transform:scale(0.98);}
 
-/* Inputs e Formulário */
 .form-group{margin-bottom:15px;}
 .form-group label{display:block;font-size:14px;margin-bottom:6px;color:var(--color-text);}
 .form-group input{
-    width:100%;padding:10px 12px;
-    border:1px solid #ccd1d9;
-    border-radius:8px;
-    font-size:16px;
-    transition:border-color 0.3s;
+    width:100%;padding:10px 12px;
+    border:1px solid #ccd1d9;
+    border-radius:8px;
+    font-size:16px;
+    transition:border-color 0.3s;
 }
 .form-group input:focus{border-color:var(--color-primary);outline:none;}
 
-/* Controles de Navegação (Anos, Meses, Dias) */
 #anos, #meses, #dias-container, #anosRelatorio, #mesesRelatorio, #semanasRelatorio{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    justify-content:center;
-    margin:15px 0;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin:15px 0;
 }
 #anos .btn, #meses .btn, #anosRelatorio .btn, #mesesRelatorio .btn, #semanasRelatorio .btn{
-    display:inline-block;
-    width:auto;
-    padding:10px 15px;
-    font-size:15px;
+    display:inline-block;
+    width:auto;
+    padding:10px 15px;
+    font-size:15px;
 }
 
-/* Relatório */
 .relatorio-item{
-    background:#f4f6f8;
-    border-left: 5px solid var(--color-primary);
-    padding:15px;
-    margin-bottom:15px;
-    border-radius:8px;
+    background:#f4f6f8;
+    border-left: 5px solid var(--color-primary);
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:8px;
 }
 .relatorio-item h4{
-    margin-top:0;
-    margin-bottom:10px;
-    color:var(--color-primary);
-    border-bottom: 1px dashed #ccc;
-    padding-bottom: 5px;
-    font-size: 16px;
+    margin-top:0;
+    margin-bottom:10px;
+    color:var(--color-primary);
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+    font-size: 16px;
 }
 .relatorio-item p{
-    font-size: 14px;
-    line-height: 1.4;
-    margin: 3px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 3px 0;
 }
 
-/* Calendário (Dias) */
 #dias-container{display:block;}
 #dias-header, #dias{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    text-align:center;
-    gap:4px;
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    text-align:center;
+    gap:4px;
 }
 #dias-header div{
-    font-weight:600;
-    font-size:11px;
-    padding:8px 0;
-    color:var(--color-primary);
+    font-weight:600;
+    font-size:11px;
+    padding:8px 0;
+    color:var(--color-primary);
 }
 #dias .btn{
-    padding:10px 5px;margin:0;font-size:14px;height:40px;
-    display:flex;align-items:center;justify-content:center;
-    background:#f4f6f8;color:var(--color-text);box-shadow:none;
+    padding:10px 5px;margin:0;font-size:14px;height:40px;
+    display:flex;align-items:center;justify-content:center;
+    background:#f4f6f8;color:var(--color-text);box-shadow:none;
 }
 #dias .btn:hover{background:#dcdfe4;}
 #dias .btn-active{background:var(--color-primary); color:white;}
 #dias .btn:active{transform:none;}
 
-/* Resultado/Mensagens */
 #resultado{
-    margin-top:20px;padding:12px;border-radius:10px;
-    font-size:15px;text-align:center;font-weight:bold;
+    margin-top:20px;padding:12px;border-radius:10px;
+    font-size:15px;text-align:center;font-weight:bold;
 }
 #resultado.sucesso{background:var(--color-secondary);color:white;}
 #resultado.erro{background:var(--color-danger);color:white;}
@@ -168,8 +159,8 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
 </head>
 <body>
 <header>
-    <button class="header-btn hidden" id="btnVoltarInicialHeader" onclick="voltarTelaInicial()">🏠 Início</button>
-    <div id="header-title">ESCALA ADCEB</div>
+    <button class="header-btn hidden" id="btnVoltarInicialHeader" onclick="voltarTelaInicial()">🏠 Início</button>
+    <div id="header-title">ESCALA ADCEB</div>
 </header>
 <main>
 
@@ -196,8 +187,8 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
 <div id="anos"></div>
 <div id="meses" class="hidden"></div>
 <div id="dias-container" class="hidden">
-    <div id="dias-header"></div> 
-    <div id="dias"></div>
+    <div id="dias-header"></div> 
+    <div id="dias"></div>
 </div>
 <button class="btn-secondary" id="btnVoltarUsuario" onclick="voltarTela()">Voltar</button>
 
@@ -224,456 +215,535 @@ h1{text-align:center;margin-bottom:20px;color:var(--color-primary);}
 </div>
 
 <div id="telaRelatorio" class="card hidden">
-    <h2>Gerar Relatório Semanal</h2>
-    <p>Selecione o período para visualizar as escalas salvas.</p>
+    <h2>Gerar Relatório Semanal</h2>
+    <p>Selecione o período para visualizar as escalas salvas.</p>
 
-    <div id="anosRelatorio"></div>
-    <div id="mesesRelatorio" class="hidden"></div>
-    
-    <h3 id="tituloSemanas" class="hidden" style="text-align:center; margin-top:15px; color:var(--color-text);">Selecione a Semana:</h3>
-    <div id="semanasRelatorio" class="hidden"></div>
+    <div id="anosRelatorio"></div>
+    <div id="mesesRelatorio" class="hidden"></div>
+    
+    <h3 id="tituloSemanas" class="hidden" style="text-align:center; margin-top:15px; color:var(--color-text);">Selecione a Semana:</h3>
+    <div id="semanasRelatorio" class="hidden"></div>
 
-    <div id="visualizacaoRelatorio"></div>
+    <div id="visualizacaoRelatorio"></div>
 
-    <button class="btn-secondary" onclick="voltarTela()">Voltar</button>
+    <button class="btn-secondary" onclick="voltarTela()">Voltar</button>
 </div>
-<script>
-let senhaADM = localStorage.getItem("senhaADM") || "025563";
-let admLogado = false;
-const ANO_INICIAL_ESCALA = 2025; 
-const ANO_FINAL_ESCALA = ANO_INICIAL_ESCALA + 2; // 2027
 
-// Inicializa ano/mês/dia
-let anoSelecionado = new Date().getFullYear(); 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+<script>
+// 2. CONFIGURAÇÃO DO FIREBASE
+// *** IMPORTANTE: VOCÊ DEVE SUBSTITUIR ESTES VALORES PELOS SEUS DO CONSOLE DO FIREBASE ***
+const firebaseConfig = {
+    apiKey: "AIzaSyDrnMt8BIsf2Ds4EpI6oM23NTGxn0usNVY",, // <--- Substitua aqui
+    authDomain: "escala-adceb.firebaseapp.com", // <--- Substitua aqui
+    projectId: "escala-adceb", // <--- Substitua aqui
+    storageBucket: "escala-adceb.firebasestorage.app", // <--- Substitua aqui
+    messagingSenderId: "39134006437", // <--- Substitua aqui
+    appId: "1:39134006437:web:6ffad71dbf87bb8088d14c" // <--- Substitua aqui
+};
+
+// Inicializa o Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+// 3. VARIÁVEIS GLOBAIS
+let admLogado = false;
+const ANO_INICIAL_ESCALA = 2025; 
+const ANO_FINAL_ESCALA = ANO_INICIAL_ESCALA + 2;
+const COLLECTION_ESCALAS = 'escalas_adceb'; // Nome da coleção no Firestore
+const ADMIN_EMAIL = 'adceb.igreja@gmail.com'; // E-mail usado no Firebase Auth para o ADM
+const ADMIN_UID = 'R4bMqYM4GWedxj4xkZhGyvEssSp2'; // <--- UID (User ID) do usuário ADM do Firebase. SUBSTITUA!
+
+let anoSelecionado = new Date().getFullYear(); 
 if (anoSelecionado < ANO_INICIAL_ESCALA) {
-    anoSelecionado = ANO_INICIAL_ESCALA;
+    anoSelecionado = ANO_INICIAL_ESCALA;
 } else if (anoSelecionado > ANO_FINAL_ESCALA) {
-    anoSelecionado = ANO_FINAL_ESCALA;
+    anoSelecionado = ANO_FINAL_ESCALA;
 }
 let mesSelecionado = null;
 let diaSelecionado = null;
 
-// Variáveis de Relatório
 let anoRelatorio = anoSelecionado;
 let mesRelatorio = null;
 
 const mesesArray=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const diasSemanaArray = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 
-// --- FUNÇÕES DE NAVEGAÇÃO COM HISTÓRICO ---
 const telas = ["telaInicial", "telaADM", "telaUsuario", "anos", "meses", "dias-container", "formEscala", "telaRelatorio"];
-let historyStack = []; 
+let historyStack = []; 
 let currentScreen = "telaInicial";
 
+// --- FUNÇÕES DE NAVEGAÇÃO (MANTIDAS) ---
+
 function updateHeaderButton() {
-    const headerBtn = document.getElementById("btnVoltarInicialHeader");
-    if (currentScreen !== "telaInicial") {
-        headerBtn.classList.remove("hidden");
-    } else {
-        headerBtn.classList.add("hidden");
-    }
+    const headerBtn = document.getElementById("btnVoltarInicialHeader");
+    if (currentScreen !== "telaInicial") {
+        headerBtn.classList.remove("hidden");
+    } else {
+        headerBtn.classList.add("hidden");
+    }
 }
 
 function hideAllScreens() {
-    telas.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add("hidden");
-    });
-    document.getElementById("formEscala").classList.add("hidden");
-    document.getElementById("botoesADM").classList.add("hidden");
-    document.getElementById("btnGerarRelatorio").classList.add("hidden");
+    telas.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+    });
+    document.getElementById("formEscala").classList.add("hidden");
+    document.getElementById("botoesADM").classList.add("hidden");
+    document.getElementById("btnGerarRelatorio").classList.add("hidden");
 }
 
 function navigateTo(screenId, pushHistory = true) {
-    if (currentScreen && pushHistory && currentScreen !== screenId) {
-        historyStack.push(currentScreen);
-    }
-    hideAllScreens();
-    const newScreen = document.getElementById(screenId);
-    if (newScreen) newScreen.classList.remove("hidden");
-    currentScreen = screenId;
-    
-    updateHeaderButton();
+    if (currentScreen && pushHistory && currentScreen !== screenId) {
+        historyStack.push(currentScreen);
+    }
+    hideAllScreens();
+    const newScreen = document.getElementById(screenId);
+    if (newScreen) newScreen.classList.remove("hidden");
+    currentScreen = screenId;
+    
+    updateHeaderButton();
 
-    const btnVoltarUsuario = document.getElementById("btnVoltarUsuario");
-    if (btnVoltarUsuario) {
-        const showCardVoltar = screenId !== "telaInicial" && screenId !== "telaADM" && screenId !== "telaRelatorio";
-        if (showCardVoltar) {
-            btnVoltarUsuario.classList.remove("hidden");
-        } else {
-            btnVoltarUsuario.classList.add("hidden");
-        }
-    }
-    
-    // Mostra o botão Gerar Relatório apenas se for ADM e estiver na tela principal do calendário (telaUsuario)
-    if (screenId === "telaUsuario" && admLogado) {
-        document.getElementById("btnGerarRelatorio").classList.remove("hidden");
-        // Quando volta para telaUsuario, esconde as sub-telas do calendário
-        document.getElementById("anos").classList.add("hidden");
-    }
+    const btnVoltarUsuario = document.getElementById("btnVoltarUsuario");
+    if (btnVoltarUsuario) {
+        const showCardVoltar = screenId !== "telaInicial" && screenId !== "telaADM" && screenId !== "telaRelatorio";
+        if (showCardVoltar) {
+            btnVoltarUsuario.classList.remove("hidden");
+        } else {
+            btnVoltarUsuario.classList.add("hidden");
+        }
+    }
+    
+    if (screenId === "telaUsuario" && admLogado) {
+        document.getElementById("btnGerarRelatorio").classList.remove("hidden");
+        document.getElementById("anos").classList.add("hidden");
+    }
 }
 
 function voltarTela() {
-    if (historyStack.length > 0) {
-        let previousScreen = historyStack.pop();
-        
-        // Lógica para navegação interna do calendário/relatório
-        if (currentScreen === "formEscala") previousScreen = "dias-container";
-        else if (currentScreen === "dias-container") previousScreen = "meses";
-        else if (currentScreen === "meses") previousScreen = "anos";
-        else if (currentScreen === "anos") previousScreen = "telaUsuario";
-
-        // Lógica para navegação interna do Relatório
-        else if (currentScreen === "telaRelatorio") {
-            if(previousScreen === "semanasRelatorio" || previousScreen === "mesesRelatorio" || previousScreen === "anosRelatorio"){
-                // Se estava no fluxo do relatório, restaura o estado anterior do relatório
-            }
-            previousScreen = "telaUsuario"; // Volta para a tela principal de seleção de escala/relatório
-        }
-        
-        navigateTo(previousScreen, false); 
-        
-        // Recria o estado da tela
-        if (previousScreen === "anos") iniciarAno(false);
-        else if (previousScreen === "meses") gerarMeses(false);
-        else if (previousScreen === "dias-container") gerarDias(mesSelecionado, false);
-
-        // Recria o estado do relatório
-        else if (previousScreen === "anosRelatorio") iniciarRelatorioAnos(false);
-        else if (previousScreen === "mesesRelatorio") gerarRelatorioMeses(false);
-        else if (previousScreen === "semanasRelatorio") gerarRelatorioSemanas(mesRelatorio, false);
-        
-    } else {
-        voltarTelaInicial();
-    }
+    // Lógica de navegação de volta (simplificada)
+    if (currentScreen === "formEscala") navigateTo("dias-container", false);
+    else if (currentScreen === "dias-container") navigateTo("meses", false);
+    else if (currentScreen === "meses") navigateTo("anos", false);
+    else if (currentScreen === "anos") navigateTo("telaUsuario", false);
+    else if (currentScreen === "telaRelatorio") {
+        document.getElementById("visualizacaoRelatorio").innerHTML = '';
+        document.getElementById("tituloSemanas").classList.add("hidden");
+        document.getElementById("mesesRelatorio").classList.add("hidden");
+        document.getElementById("semanasRelatorio").classList.add("hidden");
+        navigateTo("anosRelatorio", false);
+    } 
+    else if (historyStack.length > 0) {
+        let previousScreen = historyStack.pop();
+        navigateTo(previousScreen, false);
+    } else {
+        voltarTelaInicial();
+    }
 }
 
 function voltarTelaInicial(){
-    historyStack = []; 
-    navigateTo("telaInicial", false);
+    sairADM();
+    historyStack = []; 
+    navigateTo("telaInicial", false);
 }
 
-// Entrar ADM
+// --- FUNÇÕES ADM (MODIFICADAS PARA FIREBASE AUTH) ---
 function entrarADM(){
-    navigateTo("telaADM");
+    navigateTo("telaADM");
 }
 
-// Verificar ADM
-function verificarADM(){
-    let senha = document.getElementById("senhaADMInput").value;
-    if(senha === senhaADM){
-        admLogado = true;
-        navigateTo("telaUsuario"); 
-        iniciarAno(false); // Não empilha "telaUsuario" no histórico
-    }else{
-        alert("Senha incorreta!");
-    }
+async function verificarADM(){
+    let senha = document.getElementById("senhaADMInput").value;
+    const msgADM = document.getElementById("msgADM");
+    msgADM.innerText = "Verificando...";
+    
+    try{
+        // Tenta fazer login com email e senha
+        const userCredential = await auth.signInWithEmailAndPassword(ADMIN_EMAIL, senha);
+        
+        // Verifica se é o ADM correto
+        if(userCredential.user.uid === ADMIN_UID){
+            admLogado = true;
+            document.getElementById("senhaADMInput").value = '';
+            msgADM.innerText = "Login ADM realizado com sucesso!";
+            navigateTo("telaUsuario"); 
+            iniciarAno(false);
+        } else {
+            auth.signOut();
+            throw new Error("Usuário não autorizado como ADM.");
+        }
+
+    }catch(error){
+        console.error("Erro de login ADM:", error);
+        if (error.code === 'auth/wrong-password' || error.message.includes('password')) {
+            msgADM.innerText = "Senha incorreta!";
+        } else {
+            msgADM.innerText = "Erro no acesso ADM. Verifique seu Firebase Auth.";
+        }
+    }
 }
 
-// Entrar Usuário
+function sairADM() {
+    admLogado = false;
+    auth.signOut();
+}
+
 function entrarUsuario(){
-    admLogado=false;
-    navigateTo("telaUsuario");
-    iniciarAno(false); // Não empilha "telaUsuario" no histórico
+    sairADM(); // Garante que o ADM é deslogado
+    navigateTo("telaUsuario");
+    iniciarAno(false); 
 }
 
-// --- Funções de Calendário (Mantidas) ---
+async function alterarSenha(){ 
+    if(!admLogado) return; 
+    let nova=prompt("Digite a NOVA senha (mínimo 6 caracteres) para o ADM:"); 
+    if(nova && nova.length >= 6){ 
+        try {
+            await auth.currentUser.updatePassword(nova);
+            alert("Senha ADM alterada com sucesso no Firebase!"); 
+        } catch (error) {
+            console.error("Erro ao alterar senha:", error);
+            alert("Erro ao alterar senha. Você precisa estar logado recentemente. Tente sair e entrar novamente.");
+        }
+    }else{ 
+        alert("Senha inválida! Deve ter pelo menos 6 caracteres."); 
+    } 
+}
+
+// --- FUNÇÕES DE CALENDÁRIO (MANTIDAS) ---
 
 function iniciarAno(pushHistory = true){
-    navigateTo("anos", pushHistory);
-    const anosDiv = document.getElementById("anos");
-    anosDiv.innerHTML="";
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    
-    for(let y=ANO_INICIAL_ESCALA; y<=ANO_FINAL_ESCALA; y++){
-        let btn = document.createElement("button");
-        btn.className="btn";
-        if (y === anoSelecionado) btn.classList.add('btn-secondary');
-        btn.innerText=y;
-        btn.onclick=()=>{ 
-            anoSelecionado=y; 
-            gerarMeses(); 
-        };
-        btn.style.width = 'auto'; 
-        btn.style.display = 'inline-block';
-        anosDiv.appendChild(btn);
-    }
+    navigateTo("anos", pushHistory);
+    const anosDiv = document.getElementById("anos");
+    anosDiv.innerHTML="";
+    document.getElementById("telaUsuario").classList.remove("hidden"); 
+    
+    for(let y=ANO_INICIAL_ESCALA; y<=ANO_FINAL_ESCALA; y++){
+        let btn = document.createElement("button");
+        btn.className="btn";
+        if (y === anoSelecionado) btn.classList.add('btn-secondary');
+        btn.innerText=y;
+        btn.onclick=()=>{ 
+            anoSelecionado=y; 
+            gerarMeses(); 
+        };
+        btn.style.width = 'auto'; 
+        btn.style.display = 'inline-block';
+        anosDiv.appendChild(btn);
+    }
 }
 
 function gerarMeses(pushHistory = true){
-    navigateTo("meses", pushHistory);
-    const mesesDiv = document.getElementById("meses");
-    mesesDiv.innerHTML="";
-    
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    
-    mesesArray.forEach((m,i)=>{
-        let btn = document.createElement("button");
-        btn.className="btn";
-        if (i+1 === mesSelecionado) btn.classList.add('btn-secondary');
-        btn.innerText=m;
-        btn.onclick=()=>{ mesSelecionado=i+1; gerarDias(i+1); };
-        btn.style.width = 'auto'; 
-        btn.style.display = 'inline-block';
-        mesesDiv.appendChild(btn);
-    });
+    navigateTo("meses", pushHistory);
+    const mesesDiv = document.getElementById("meses");
+    mesesDiv.innerHTML="";
+    
+    document.getElementById("telaUsuario").classList.remove("hidden"); 
+    
+    mesesArray.forEach((m,i)=>{
+        let btn = document.createElement("button");
+        btn.className="btn";
+        if (i+1 === mesSelecionado) btn.classList.add('btn-secondary');
+        btn.innerText=m;
+        btn.onclick=()=>{ mesSelecionado=i+1; gerarDias(i+1); };
+        btn.style.width = 'auto'; 
+        btn.style.display = 'inline-block';
+        mesesDiv.appendChild(btn);
+    });
 }
 
 function gerarDias(mes, pushHistory = true){
-    navigateTo("dias-container", pushHistory);
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    
-    const diasDiv = document.getElementById("dias");
-    const headerDiv = document.getElementById("dias-header");
-    diasDiv.innerHTML="";
-    headerDiv.innerHTML="";
-    
-    diasSemanaArray.forEach(dia => {
-        let headerItem = document.createElement("div");
-        headerItem.innerText = dia;
-        headerDiv.appendChild(headerItem);
-    });
+    navigateTo("dias-container", pushHistory);
+    document.getElementById("telaUsuario").classList.remove("hidden"); 
+    
+    const diasDiv = document.getElementById("dias");
+    const headerDiv = document.getElementById("dias-header");
+    diasDiv.innerHTML="";
+    headerDiv.innerHTML="";
+    
+    diasSemanaArray.forEach(dia => {
+        let headerItem = document.createElement("div");
+        headerItem.innerText = dia;
+        headerDiv.appendChild(headerItem);
+    });
 
-    const qtdDias = new Date(anoSelecionado, mes, 0).getDate();
-    let primeiroDiaMes = new Date(anoSelecionado, mes - 1, 1).getDay();
-    let startDayIndex = (primeiroDiaMes === 0) ? 6 : primeiroDiaMes - 1; 
+    const qtdDias = new Date(anoSelecionado, mes, 0).getDate();
+    let primeiroDiaMes = new Date(anoSelecionado, mes - 1, 1).getDay();
+    let startDayIndex = (primeiroDiaMes === 0) ? 6 : primeiroDiaMes - 1; 
 
-    for(let i=0; i < startDayIndex; i++){
-        let empty = document.createElement("div");
-        diasDiv.appendChild(empty);
+    for(let i=0; i < startDayIndex; i++){
+        let empty = document.createElement("div");
+        diasDiv.appendChild(empty);
+    }
+
+    for(let d=1; d<=qtdDias; d++){
+        let btn = document.createElement("button");
+        btn.className="btn";
+        if (d === diaSelecionado) btn.classList.add('btn-active');
+        btn.innerText=d;
+        btn.onclick=()=>{ diaSelecionado=d; mostrarFormulario(); };
+        diasDiv.appendChild(btn);
+    }
+}
+
+async function mostrarFormulario(){
+    navigateTo("formEscala");
+    document.getElementById("telaUsuario").classList.remove("hidden"); 
+    const formDiv = document.getElementById("formEscala");
+    formDiv.classList.remove("hidden");
+    document.getElementById("dataSelecionada").innerText = `${diaSelecionado} de ${mesesArray[mesSelecionado-1]} de ${anoSelecionado}`;
+    
+    const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
+    
+    document.getElementById("escalaForm").reset();
+
+    try {
+        // *** RECUPERAÇÃO VIA FIREBASE ***
+        const docRef = db.collection(COLLECTION_ESCALAS).doc(chave);
+        const doc = await docRef.get();
+
+        if(doc.exists){
+            const escala = doc.data();
+            Object.keys(escala).forEach(k=>{
+                let input = document.getElementById(k);
+                if(input) input.value = escala[k] || '';
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao carregar escala:", error);
+        alert("Erro ao carregar escala do servidor. Verifique sua conexão e configurações do Firebase.");
     }
+    
+    [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ i.disabled=!admLogado; });
+    if(admLogado) document.getElementById("botoesADM").classList.remove("hidden");
+}
 
-    for(let d=1; d<=qtdDias; d++){
-        let btn = document.createElement("button");
-        btn.className="btn";
-        if (d === diaSelecionado) btn.classList.add('btn-active');
-        btn.innerText=d;
-        btn.onclick=()=>{ diaSelecionado=d; mostrarFormulario(); };
-        diasDiv.appendChild(btn);
+async function salvarEscala(){
+    if(!admLogado) return alert("Somente ADM pode salvar");
+    const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
+    const escala={};
+    [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ escala[i.id]=i.value; });
+    
+    try {
+        // *** SALVAMENTO VIA FIREBASE ***
+        await db.collection(COLLECTION_ESCALAS).doc(chave).set(escala);
+        alert("Escala salva permanentemente no Firebase e será compartilhada com todos!");
+    } catch (error) {
+        console.error("Erro ao salvar escala:", error);
+        alert("Erro ao salvar escala no servidor. Tente novamente.");
     }
 }
 
-function mostrarFormulario(){
-    navigateTo("formEscala");
-    document.getElementById("telaUsuario").classList.remove("hidden"); 
-    const formDiv = document.getElementById("formEscala");
-    formDiv.classList.remove("hidden");
-    document.getElementById("dataSelecionada").innerText = `${diaSelecionado} de ${mesesArray[mesSelecionado-1]} de ${anoSelecionado}`;
-    
-    const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
-    const escala = JSON.parse(localStorage.getItem(chave));
-    
-    if(escala){
-        Object.keys(escala).forEach(k=>{
-            let input = document.getElementById(k);
-            if(input) input.value = escala[k];
-        });
-    }else{ 
-        document.getElementById("escalaForm").reset(); 
-    }
-    
-    [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ i.disabled=!admLogado; });
-    if(admLogado) document.getElementById("botoesADM").classList.remove("hidden");
+function editarEscala(){ 
+    if(!admLogado) return; 
+    alert("Modo edição liberado. Clique em 'Salvar' após as alterações."); 
 }
 
-function salvarEscala(){
-    if(!admLogado) return alert("Somente ADM pode salvar");
-    const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`;
-    const escala={};
-    [...document.querySelectorAll("#escalaForm input")].forEach(i=>{ escala[i.id]=i.value; });
-    localStorage.setItem(chave,JSON.stringify(escala));
-    alert("Escala salva permanentemente para esta data!");
+async function excluirEscala(){ 
+    if(!admLogado) return; 
+    const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`; 
+    
+    if (confirm(`Tem certeza que deseja EXCLUIR a escala para ${document.getElementById("dataSelecionada").innerText}?`)) {
+        try {
+            // *** EXCLUSÃO VIA FIREBASE ***
+            await db.collection(COLLECTION_ESCALAS).doc(chave).delete();
+            document.getElementById("escalaForm").reset(); 
+            alert("Escala excluída permanentemente do Firebase."); 
+        } catch (error) {
+            console.error("Erro ao excluir escala:", error);
+            alert("Erro ao excluir escala do servidor. Tente novamente.");
+        }
+    }
 }
 
-function editarEscala(){ 
-    if(!admLogado) return; 
-    alert("Modo edição liberado (pode editar campos acima). Clique em 'Salvar' após as alterações."); 
-}
-
-function excluirEscala(){ 
-    if(!admLogado) return; 
-    const chave = `${diaSelecionado}-${mesSelecionado}-${anoSelecionado}`; 
-    
-    if (confirm(`Tem certeza que deseja EXCLUIR a escala para ${document.getElementById("dataSelecionada").innerText}?`)) {
-        localStorage.removeItem(chave); 
-        document.getElementById("escalaForm").reset(); 
-        alert("Escala excluída permanentemente."); 
-    }
-}
-
-function alterarSenha(){ 
-    if(!admLogado) return; 
-    let nova=prompt("Digite a NOVA senha de 6 dígitos para o ADM:"); 
-    if(nova && nova.length===6 && /^\d{6}$/.test(nova)){ 
-        senhaADM=nova; 
-        localStorage.setItem("senhaADM",nova); 
-        alert("Senha ADM alterada com sucesso!"); 
-    }else{ 
-        alert("Senha inválida! Deve ter exatamente 6 dígitos numéricos."); 
-    } 
-}
-
-// --- Funções de Relatório (Novo Recurso) ---
+// --- FUNÇÕES DE RELATÓRIO (MODIFICADAS PARA FIREBASE) ---
 
 function entrarRelatorio() {
-    if (!admLogado) return;
-    anoRelatorio = anoSelecionado; // Usa o último ano selecionado como ponto de partida
-    mesRelatorio = null;
-    navigateTo("telaRelatorio");
-    iniciarRelatorioAnos();
+    if (!admLogado) return;
+    anoRelatorio = anoSelecionado; 
+    mesRelatorio = null;
+    navigateTo("telaRelatorio");
+    iniciarRelatorioAnos();
 }
 
 function iniciarRelatorioAnos(pushHistory = true){
-    const anosDiv = document.getElementById("anosRelatorio");
-    const mesesDiv = document.getElementById("mesesRelatorio");
-    const semanasDiv = document.getElementById("semanasRelatorio");
-    const tituloSemanas = document.getElementById("tituloSemanas");
-    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
+    const anosDiv = document.getElementById("anosRelatorio");
+    const mesesDiv = document.getElementById("mesesRelatorio");
+    const semanasDiv = document.getElementById("semanasRelatorio");
+    const tituloSemanas = document.getElementById("tituloSemanas");
+    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
 
-    anosDiv.classList.remove("hidden");
-    mesesDiv.classList.add("hidden");
-    semanasDiv.classList.add("hidden");
-    tituloSemanas.classList.add("hidden");
-    visualizacaoDiv.innerHTML = "";
-    anosDiv.innerHTML="";
+    anosDiv.classList.remove("hidden");
+    mesesDiv.classList.add("hidden");
+    semanasDiv.classList.add("hidden");
+    tituloSemanas.classList.add("hidden");
+    visualizacaoDiv.innerHTML = "";
+    anosDiv.innerHTML="";
 
-    for(let y=ANO_INICIAL_ESCALA; y<=ANO_FINAL_ESCALA; y++){
-        let btn = document.createElement("button");
-        btn.className="btn";
-        if (y === anoRelatorio) btn.classList.add('btn-secondary');
-        btn.innerText=y;
-        btn.onclick=()=>{ 
-            anoRelatorio=y; 
-            gerarRelatorioMeses(); 
-        };
-        btn.style.width = 'auto'; 
-        btn.style.display = 'inline-block';
-        anosDiv.appendChild(btn);
-    }
+    for(let y=ANO_INICIAL_ESCALA; y<=ANO_FINAL_ESCALA; y++){
+        let btn = document.createElement("button");
+        btn.className="btn";
+        if (y === anoRelatorio) btn.classList.add('btn-secondary');
+        btn.innerText=y;
+        btn.onclick=()=>{ 
+            anoRelatorio=y; 
+            gerarRelatorioMeses(); 
+        };
+        btn.style.width = 'auto'; 
+        btn.style.display = 'inline-block';
+        anosDiv.appendChild(btn);
+    }
 }
 
 function gerarRelatorioMeses(pushHistory = true){
-    const anosDiv = document.getElementById("anosRelatorio");
-    const mesesDiv = document.getElementById("mesesRelatorio");
-    const semanasDiv = document.getElementById("semanasRelatorio");
-    const tituloSemanas = document.getElementById("tituloSemanas");
-    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
+    const anosDiv = document.getElementById("anosRelatorio");
+    const mesesDiv = document.getElementById("mesesRelatorio");
+    const semanasDiv = document.getElementById("semanasRelatorio");
+    const tituloSemanas = document.getElementById("tituloSemanas");
+    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
 
-    anosDiv.classList.add("hidden");
-    mesesDiv.classList.remove("hidden");
-    semanasDiv.classList.add("hidden");
-    tituloSemanas.classList.add("hidden");
-    visualizacaoDiv.innerHTML = "";
-    mesesDiv.innerHTML="";
+    anosDiv.classList.add("hidden");
+    mesesDiv.classList.remove("hidden");
+    semanasDiv.classList.add("hidden");
+    tituloSemanas.classList.add("hidden");
+    visualizacaoDiv.innerHTML = "";
+    mesesDiv.innerHTML="";
 
-    mesesArray.forEach((m,i)=>{
-        let btn = document.createElement("button");
-        btn.className="btn";
-        if (i+1 === mesRelatorio) btn.classList.add('btn-secondary');
-        btn.innerText=m;
-        btn.onclick=()=>{ 
-            mesRelatorio=i+1; 
-            gerarRelatorioSemanas(i+1); 
-        };
-        btn.style.width = 'auto'; 
-        btn.style.display = 'inline-block';
-        mesesDiv.appendChild(btn);
-    });
+    mesesArray.forEach((m,i)=>{
+        let btn = document.createElement("button");
+        btn.className="btn";
+        if (i+1 === mesRelatorio) btn.classList.add('btn-secondary');
+        btn.innerText=m;
+        btn.onclick=()=>{ 
+            mesRelatorio=i+1; 
+            gerarRelatorioSemanas(i+1); 
+        };
+        btn.style.width = 'auto'; 
+        btn.style.display = 'inline-block';
+        mesesDiv.appendChild(btn);
+    });
 }
 
 function gerarRelatorioSemanas(mes, pushHistory = true){
-    const mesesDiv = document.getElementById("mesesRelatorio");
-    const semanasDiv = document.getElementById("semanasRelatorio");
-    const tituloSemanas = document.getElementById("tituloSemanas");
-    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
+    const mesesDiv = document.getElementById("mesesRelatorio");
+    const semanasDiv = document.getElementById("semanasRelatorio");
+    const tituloSemanas = document.getElementById("tituloSemanas");
+    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
 
-    mesesDiv.classList.add("hidden");
-    semanasDiv.classList.remove("hidden");
-    tituloSemanas.classList.remove("hidden");
-    visualizacaoDiv.innerHTML = "";
-    semanasDiv.innerHTML="";
+    mesesDiv.classList.add("hidden");
+    semanasDiv.classList.remove("hidden");
+    tituloSemanas.classList.remove("hidden");
+    visualizacaoDiv.innerHTML = "";
+    semanasDiv.innerHTML="";
 
-    const dataInicial = new Date(anoRelatorio, mes - 1, 1);
-    const dataFinal = new Date(anoRelatorio, mes, 0);
-    const diasNoMes = dataFinal.getDate();
+    const dataFinal = new Date(anoRelatorio, mes, 0);
+    const diasNoMes = dataFinal.getDate();
 
-    let diaAtual = 1;
-    let numSemana = 1;
+    let diaAtual = 1;
+    let numSemana = 1;
 
-    while (diaAtual <= diasNoMes) {
-        let inicioSemana = diaAtual;
-        // Ajusta o dia para a primeira Segunda-feira ou o primeiro dia do mês.
-        let dataInicio = new Date(anoRelatorio, mes - 1, inicioSemana);
-        let diaSemanaInicio = dataInicio.getDay(); // 0=Dom, 1=Seg
+    while (diaAtual <= diasNoMes) {
+        let inicioSemana = diaAtual;
+        
+        let dataInicio = new Date(anoRelatorio, mes - 1, inicioSemana);
+        let diaSemanaInicio = dataInicio.getDay(); 
+        
+        if (diaAtual === 1) {
+             let offset = (diaSemanaInicio === 0) ? 6 : diaSemanaInicio - 1;
+             inicioSemana = diaAtual; 
+             if(offset > 0 && inicioSemana > 1) inicioSemana = 1; 
+        }
+        
+        let fimSemana = diaAtual + 6 - (dataInicio.getDay() === 0 ? 6 : dataInicio.getDay() - 1);
+        if (fimSemana > diasNoMes) {
+            fimSemana = diasNoMes;
+        }
         
-        // Se for o primeiro dia do mês e não for segunda-feira, ajusta o início da semana.
-        if (diaAtual === 1) {
-             let offset = (diaSemanaInicio === 0) ? 6 : diaSemanaInicio - 1; // 0 para Seg, 6 para Dom
-             inicioSemana = diaAtual - offset; // Recua para encontrar a segunda-feira da semana passada.
-             if(inicioSemana < 1) inicioSemana = 1; // Limita ao dia 1
-        }
-        
-        // Determina o último dia da semana (Domingo ou o último dia do mês)
-        let fimSemana = diaAtual + 6 - (dataInicio.getDay() === 0 ? 6 : dataInicio.getDay() - 1);
-        if (fimSemana > diasNoMes) {
-            fimSemana = diasNoMes;
-        }
+        let displayStart = diaAtual;
+        if(numSemana === 1) displayStart = 1;
 
-        const mesNome = mesesArray[mes - 1].substring(0, 3);
-        const textoBotao = `${numSemana}ª Sem. | ${inicioSemana} a ${fimSemana} de ${mesNome}`;
+        const mesNome = mesesArray[mes - 1].substring(0, 3);
+        const textoBotao = `${numSemana}ª Sem. | ${displayStart} a ${fimSemana} de ${mesNome}`;
 
-        let btn = document.createElement("button");
-        btn.className="btn";
-        btn.innerText = textoBotao;
-        btn.onclick = () => { exibirRelatorio(inicioSemana, fimSemana, mes); };
-        btn.style.width = 'auto'; 
-        btn.style.display = 'inline-block';
-        semanasDiv.appendChild(btn);
-        
-        // Avança para o próximo dia da semana
-        diaAtual = fimSemana + 1;
-        numSemana++;
-    }
+        let btn = document.createElement("button");
+        btn.className="btn";
+        btn.innerText = textoBotao;
+        btn.onclick = () => { exibirRelatorio(diaAtual, fimSemana, mes); };
+        btn.style.width = 'auto'; 
+        btn.style.display = 'inline-block';
+        semanasDiv.appendChild(btn);
+        
+        diaAtual = fimSemana + 1;
+        numSemana++;
+    }
 }
 
-function exibirRelatorio(diaInicial, diaFinal, mes) {
-    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
-    visualizacaoDiv.innerHTML = `<h3>Relatório Semanal (${diaInicial} a ${diaFinal} de ${mesesArray[mes - 1]} de ${anoRelatorio})</h3>`;
+async function exibirRelatorio(diaInicial, diaFinal, mes) {
+    const visualizacaoDiv = document.getElementById("visualizacaoRelatorio");
+    visualizacaoDiv.innerHTML = `<h3>Carregando Relatório Semanal...</h3>`;
 
-    const inputs = ["pregador", "direcao", "portaPrincipal", "portaLateral", "portaAltar", "estacionamento", "bebedouro", "sonoplastia"];
-    const labels = ["Pregador", "Direção do Culto", "Porta Principal", "Porta Lateral", "Porta Altar", "Estacionamento", "Bebedouro e Banheiros", "Sonoplastia"];
+    const inputs = ["pregador", "direcao", "portaPrincipal", "portaLateral", "portaAltar", "estacionamento", "bebedouro", "sonoplastia"];
+    const labels = ["Pregador", "Direção do Culto", "Porta Principal", "Porta Lateral", "Porta Altar", "Estacionamento", "Bebedouro e Banheiros", "Sonoplastia"];
 
-    for (let d = diaInicial; d <= diaFinal; d++) {
-        const dataChave = `${d}-${mes}-${anoRelatorio}`;
-        const escala = JSON.parse(localStorage.getItem(dataChave));
-        
-        // Calcula o dia da semana para exibição
-        let data = new Date(anoRelatorio, mes - 1, d);
-        let diaDaSemana = diasSemanaArray[data.getDay() === 0 ? 6 : data.getDay() - 1]; // 0 (Dom) vira 6
+    let relatorioHTML = `<h3>Relatório Semanal (${diaInicial} a ${diaFinal} de ${mesesArray[mes - 1]} de ${anoRelatorio})</h3>`;
 
-        let itemHTML = `<div class="relatorio-item">
-            <h4>${diaDaSemana}, ${d} de ${mesesArray[mes - 1]}</h4>`;
-        
-        if (escala) {
-            for (let i = 0; i < inputs.length; i++) {
-                const valor = escala[inputs[i]] || "Não escalado";
-                itemHTML += `<p><strong>${labels[i]}:</strong> ${valor}</p>`;
+    try {
+        for (let d = diaInicial; d <= diaFinal; d++) {
+            // Garante que só busca dias válidos do mês
+            if (d < 1 || d > new Date(anoRelatorio, mes, 0).getDate()) continue; 
+
+            const dataChave = `${d}-${mes}-${anoRelatorio}`;
+            
+            // Busca o documento no Firestore
+            const docRef = db.collection(COLLECTION_ESCALAS).doc(dataChave);
+            const doc = await docRef.get();
+            const escala = doc.exists ? doc.data() : null;
+            
+            let data = new Date(anoRelatorio, mes - 1, d);
+            let diaDaSemana = diasSemanaArray[data.getDay() === 0 ? 6 : data.getDay() - 1]; 
+
+            relatorioHTML += `<div class="relatorio-item">
+                <h4>${diaDaSemana}, ${d} de ${mesesArray[mes - 1]}</h4>`;
+            
+            if (escala) {
+                for (let i = 0; i < inputs.length; i++) {
+                    const valor = escala[inputs[i]] || "Não escalado";
+                    relatorioHTML += `<p><strong>${labels[i]}:</strong> ${valor}</p>`;
+                }
+            } else {
+                relatorioHTML += `<p>Nenhuma escala salva para esta data.</p>`;
             }
-        } else {
-            itemHTML += `<p>Nenhuma escala salva para esta data.</p>`;
+            relatorioHTML += `</div>`;
         }
-        itemHTML += `</div>`;
-        visualizacaoDiv.innerHTML += itemHTML;
+        visualizacaoDiv.innerHTML = relatorioHTML;
+
+    } catch (error) {
+        console.error("Erro ao gerar relatório:", error);
+        visualizacaoDiv.innerHTML = `<p style="color:red;">Erro ao buscar dados do relatório no Firebase. Verifique suas regras de segurança.</p>`;
     }
 }
 
 
-// Inicialização
+// --- Inicialização ---
 document.addEventListener('DOMContentLoaded', () => {
-    hideAllScreens();
-    document.getElementById("telaInicial").classList.remove("hidden");
-    document.getElementById("btnVoltarUsuario").classList.add("hidden");
-    updateHeaderButton();
+    // Escuta mudanças de autenticação 
+    auth.onAuthStateChanged(user => {
+        if (user && user.uid === ADMIN_UID) {
+            admLogado = true;
+        } else {
+            admLogado = false;
+        }
+    });
+
+    hideAllScreens();
+    document.getElementById("telaInicial").classList.remove("hidden");
+    document.getElementById("btnVoltarUsuario").classList.add("hidden");
+    updateHeaderButton();
 });
 </script>
 </main>
